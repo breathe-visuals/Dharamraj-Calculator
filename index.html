@@ -288,8 +288,7 @@
       flex-direction: column;
       background: linear-gradient(135deg, #F4F7F6 0%, #E6EDEC 100%);
       font-family: 'Inter', sans-serif;
-      padding: 0;
-      padding-bottom: 24px;
+      padding: 24px;
       z-index: -1;
     }
 
@@ -1215,10 +1214,6 @@
 
   <!-- Estimate card — captured as JPEG by html2canvas -->
   <div id="estimate-card">
-    <div class="est-header">
-      <div class="est-word">Estimate</div>
-      <div class="est-biz" id="est-biz-name">Dharamraj Calculator</div>
-    </div>
     <div class="est-meta">
       <div class="est-meta-item">
         <span class="est-meta-lbl">Customer</span>
@@ -1283,16 +1278,16 @@
 
       <div class="grid2">
 
-        <!-- Date -->
-        <div class="field">
-          <label for="f-date">Date</label>
-          <input id="f-date" type="date">
-        </div>
-
         <!-- Customer Name -->
         <div class="field">
           <label for="f-name">Customer Name</label>
           <input id="f-name" type="text" placeholder="Enter full name" autocomplete="off" spellcheck="false">
+        </div>
+
+        <!-- Date -->
+        <div class="field">
+          <label for="f-date">Date</label>
+          <input id="f-date" type="date">
         </div>
 
         <!-- Weight -->
@@ -2020,7 +2015,7 @@
     });
 
     // Enter key navigation
-    var FORM_FIELDS = ['f-date', 'f-name', 'f-w', 'f-r', 'f-l', 'f-o', 'f-g'];
+    var FORM_FIELDS = ['f-name', 'f-date', 'f-w', 'f-r', 'f-l', 'f-o', 'f-g'];
     FORM_FIELDS.forEach(function (id, idx) {
       var el = $id(id);
       if (!el) return;
@@ -2063,7 +2058,6 @@
         ? new Date($id('f-date').value).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' })
         : now.toLocaleDateString('en-IN');
 
-      $id('est-biz-name').textContent = (S.config && S.config.businessName) ? S.config.businessName : 'Dharamraj Calculator';
       $id('est-customer').textContent = data.customerName || '—';
       $id('est-date').textContent = dateStr;
       $id('est-weight').textContent = fmtWt(data.weight) + ' g';
@@ -2090,11 +2084,34 @@
         
         var name = (data.customerName ? data.customerName.replace(/\s+/g, '_') : 'Estimate')
           + '_' + (dateStr.replace(/\s/g, '-')) + '.jpg';
-        var link = document.createElement('a');
-        link.download = name;
-        link.href = canvas.toDataURL('image/jpeg', 0.95);
-        link.click();
-        toast('Estimate saved as JPEG!', 'ok');
+          
+        canvas.toBlob(function(blob) {
+          if (!blob) {
+            toast('Failed to generate image blob.', 'err');
+            return;
+          }
+          var file = new File([blob], name, { type: 'image/jpeg' });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({
+              title: 'Estimate',
+              files: [file]
+            }).then(function() {
+              toast('Estimate shared successfully!', 'ok');
+            }).catch(function(err) {
+              // Ignore AbortError if user just closed the share sheet
+              if (err.name !== 'AbortError') console.error('Share failed:', err);
+            });
+          } else {
+            // Fallback for desktop/unsupported browsers
+            var url = URL.createObjectURL(blob);
+            var link = document.createElement('a');
+            link.download = name;
+            link.href = url;
+            link.click();
+            URL.revokeObjectURL(url);
+            toast('Estimate saved as JPEG!', 'ok');
+          }
+        }, 'image/jpeg', 0.95);
       }).catch(function (err) {
         console.error(err);
         card.style.left = '-9999px';
