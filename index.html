@@ -5,16 +5,16 @@
   <meta charset="UTF-8">
   <meta name="viewport"
     content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-  <title>Dharamraj Calculator</title>
+  <title>Jewellery Calculator</title>
   <meta name="description"
-    content="Dharamraj Calculator — professional jewellery cost calculator tracking metal, labour, GST and records.">
+    content="Jewellery Calculator — professional jewellery cost calculator tracking metal, labour, GST and records.">
 
   <!-- PWA / Installable Web App -->
   <link rel="manifest" href="/Media/site.webmanifest">
   <meta name="theme-color" content="#033C3C">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Dharamraj Calc">
+  <meta name="apple-mobile-web-app-title" content="Jewellery Calc">
   <link rel="apple-touch-icon" href="/Media/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/Media/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/Media/favicon-16x16.png">
@@ -669,7 +669,11 @@
 
     .ab:hover { background: #F3F4F6; }
 
-    .ab.del { color: var(--danger); border-color: var(--danger-bg); }
+    .ab.edit { color: var(--primary); }
+    .ab.edit:hover { background: var(--primary-bg); }
+    .ab.share { color: var(--success); }
+    .ab.share:hover { background: var(--success-bg); }
+    .ab.del { color: var(--danger); }
     .ab.del:hover { background: var(--danger-bg); border-color: var(--danger); }
 
     /* ══════════════════════════════════════════════════════════
@@ -1260,7 +1264,7 @@
   <!-- Top bar -->
   <div id="topbar">
     <div class="tb-inner">
-      <img id="navbar-logo" src="/Media/Main.png" alt="Dharamraj Calculator">
+      <img id="navbar-logo" src="/Media/Main.png" alt="Jewellery Calculator">
     </div>
   </div>
 
@@ -1639,6 +1643,7 @@
     function actionBtns(id) {
       var eid = esc(id);
       return '<button class="ab edit" data-id="' + eid + '">Edit</button>'
+        + '<button class="ab share" data-id="' + eid + '">Share</button>'
         + '<button class="ab del"  data-id="' + eid + '">Delete</button>';
     }
 
@@ -2051,12 +2056,17 @@
     $id('b-cancel').addEventListener('click', resetForm);
     if ($id('b-refresh')) $id('b-refresh').addEventListener('click', function () { loadRecords(true); });
 
-    function generateImage() {
-      var data = collectFormData();
+    function generateImage(rec) {
+      var data = rec || collectFormData();
       var now = new Date();
-      var dateStr = $id('f-date').value
-        ? new Date($id('f-date').value).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' })
-        : now.toLocaleDateString('en-IN');
+      var dateStr;
+      
+      if (rec && rec.date) {
+        dateStr = rec.date;
+      } else {
+        var fDate = $id('f-date').value;
+        dateStr = fDate ? new Date(fDate).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }) : now.toLocaleDateString('en-IN');
+      }
 
       $id('est-customer').textContent = data.customerName || '—';
       $id('est-date').textContent = dateStr;
@@ -2154,11 +2164,11 @@
         if (btn.classList.contains('edit')) {
           var rec = S.records.find(function (r) { return r.calcId === id; });
           if (rec) fillForm(rec);
-        } else if (btn.classList.contains('print')) {
+        } else if (btn.classList.contains('share')) {
           var rec = S.records.find(function (r) { return r.calcId === id; });
           if (rec) {
-            fillForm(rec);
-            setTimeout(generateImage, 100);
+            toast('Generating image...', 'info');
+            setTimeout(function() { generateImage(rec); }, 50);
           }
         } else if (btn.classList.contains('del')) {
           doDelete(id);
