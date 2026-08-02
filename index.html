@@ -1440,7 +1440,8 @@
       <button id="b-update" class="btn bs" disabled>✏️ Update</button>
       <button id="b-cancel" class="btn bg" style="display:none;">✕ Cancel</button>
       <button id="b-reset" class="btn bg">↺ Reset</button>
-      <button id="b-print" class="btn bg">🖼️ Save</button>
+      <button id="b-print" class="btn bg">🖨️ Print</button>
+      <button id="b-image" class="btn bg">🖼️ Image</button>
     </div>
   </div>
 
@@ -2046,6 +2047,11 @@
     if ($id('b-refresh')) $id('b-refresh').addEventListener('click', function () { loadRecords(true); });
 
     $id('b-print').addEventListener('click', function () {
+      $id('ph-dt').textContent = 'Printed on ' + new Date().toLocaleDateString('en-IN');
+      window.print();
+    });
+
+    $id('b-image').addEventListener('click', function () {
       // Populate the hidden estimate card
       var data = collectFormData();
       var now = new Date();
