@@ -284,12 +284,12 @@
       width: 480px;
       min-height: 600px;
       height: auto;
-      padding-bottom: 24px;
       display: flex;
       flex-direction: column;
       background: linear-gradient(135deg, #F4F7F6 0%, #E6EDEC 100%);
       font-family: 'Inter', sans-serif;
       padding: 0;
+      padding-bottom: 24px;
       z-index: -1;
     }
 
@@ -925,28 +925,37 @@
     #records-total-bar {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      row-gap: 24px;
-      column-gap: 16px;
-      background: #044b4b;
+      grid-template-areas:
+        "records weight metal"
+        ". gst total";
+      background: linear-gradient(135deg, var(--primary) 0%, #045a5a 100%);
       color: #FFF;
       border-radius: var(--r-md);
-      padding: 24px;
+      padding: 20px 24px;
       margin-top: var(--sp-lg);
-      box-shadow: 0 4px 12px rgba(3, 60, 60, 0.2);
+      box-shadow: 0 4px 12px rgba(3, 60, 60, 0.15);
+      row-gap: 24px;
+      column-gap: 12px;
     }
 
     .rtb-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
     }
+
+    .rtb-item.area-records { grid-area: records; }
+    .rtb-item.area-weight { grid-area: weight; }
+    .rtb-item.area-metal { grid-area: metal; }
+    .rtb-item.area-gst { grid-area: gst; }
+    .rtb-item.area-total { grid-area: total; }
 
     .rtb-lbl {
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
       opacity: 0.8;
     }
 
@@ -957,9 +966,9 @@
       color: #FFF;
     }
 
-    .rtb-val.grand { font-size: 22px; color: var(--gold); }
+    .rtb-val.grand { font-size: 22px; color: #E3B958; }
 
-    .rtb-divider {
+    .rtb-divider { display: none; }
       width: 1px;
       height: 36px;
       background: rgba(255, 255, 255, 0.2);
@@ -1162,7 +1171,8 @@
       .grid2 { gap: 8px; }
       .divider { margin: 10px 0; }
 
-      #records-total-bar { padding: 12px 14px; gap: 10px; }
+      #records-total-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 12px 14px; }
+      .rtb-item { display: flex; flex-direction: column; gap: 2px; }
       .rtb-val { font-size: 15px; }
       .rtb-val.grand { font-size: 18px; }
       .rtb-lbl { font-size: 9px; }
@@ -1197,6 +1207,11 @@
     </div>
   </div>
 
+  <!-- Print header (kept for @media print fallback) -->
+  <div id="ph">
+    <h2 id="ph-name"></h2>
+    <p id="ph-dt"></p>
+  </div>
 
   <!-- Estimate card — captured as JPEG by html2canvas -->
   <div id="estimate-card">
@@ -1268,16 +1283,16 @@
 
       <div class="grid2">
 
-        <!-- Customer Name -->
-        <div class="field">
-          <label for="f-name">Customer Name</label>
-          <input id="f-name" type="text" placeholder="Enter full name" autocomplete="off" spellcheck="false">
-        </div>
-
         <!-- Date -->
         <div class="field">
           <label for="f-date">Date</label>
           <input id="f-date" type="date">
+        </div>
+
+        <!-- Customer Name -->
+        <div class="field">
+          <label for="f-name">Customer Name</label>
+          <input id="f-name" type="text" placeholder="Enter full name" autocomplete="off" spellcheck="false">
         </div>
 
         <!-- Weight -->
@@ -1403,24 +1418,23 @@
 
       <!-- Records Running Total Bar -->
       <div id="records-total-bar">
-        <div class="rtb-item">
+        <div class="rtb-item area-records">
           <span class="rtb-lbl">Records</span>
           <span class="rtb-val" id="rtb-count">0</span>
         </div>
-        <div class="rtb-item">
+        <div class="rtb-item area-weight">
           <span class="rtb-lbl">Total Weight</span>
           <span class="rtb-val" id="rtb-weight">0g</span>
         </div>
-        <div class="rtb-item">
+        <div class="rtb-item area-metal">
           <span class="rtb-lbl">Total Metal</span>
           <span class="rtb-val" id="rtb-metal">₹0</span>
         </div>
-        <div></div> <!-- Grid Spacer -->
-        <div class="rtb-item">
+        <div class="rtb-item area-gst">
           <span class="rtb-lbl">Total GST</span>
           <span class="rtb-val" id="rtb-gst">₹0</span>
         </div>
-        <div class="rtb-item">
+        <div class="rtb-item area-total">
           <span class="rtb-lbl">Grand Total</span>
           <span class="rtb-val grand" id="rtb-total">₹0</span>
         </div>
@@ -1433,11 +1447,11 @@
   <!-- Bottom action bar -->
   <div id="abar">
     <div class="abar-inner">
-      <button id="b-save" class="btn bp"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>Save</button>
-      <button id="b-update" class="btn bs" disabled><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>Update</button>
-      <button id="b-cancel" class="btn bg" style="display:none;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>Cancel</button>
-      <button id="b-reset" class="btn bg"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>Reset</button>
-      <button id="b-print" class="btn bg"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>Print Image</button>
+      <button id="b-save" class="btn bp"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Save</button>
+      <button id="b-update" class="btn bs" disabled><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg> Update</button>
+      <button id="b-cancel" class="btn bg" style="display:none;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Cancel</button>
+      <button id="b-reset" class="btn bg"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v6h6"></path><path d="M3 13a9 9 0 1 0 3-7.7L3 8"></path></svg> Reset</button>
+      <button id="b-image" class="btn bg"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> Save JPEG</button>
     </div>
   </div>
 
@@ -1630,7 +1644,6 @@
     function actionBtns(id) {
       var eid = esc(id);
       return '<button class="ab edit" data-id="' + eid + '">Edit</button>'
-        + '<button class="ab print" data-id="' + eid + '">Print</button>'
         + '<button class="ab del"  data-id="' + eid + '">Delete</button>';
     }
 
@@ -1808,8 +1821,8 @@
       };
     }
 
-    function setBusy(id, txt) { var b = $id(id); b.disabled = true; b.innerHTML = '<span style="display:inline-flex;align-items:center;gap:6px;">' + txt + '</span>'; }
-    function setFree(id, txt) { var b = $id(id); b.disabled = false; b.textContent = txt; }
+    function setBusy(id, txt) { var b = $id(id); b.disabled = true; b.textContent = txt; }
+    function setFree(id, content) { var b = $id(id); b.disabled = false; b.innerHTML = content; }
 
     function localAddRecord(calcId, data) {
       S.records.push({
@@ -1865,7 +1878,7 @@
 
       gasCall('saveCalculation', data)
         .then(function (res) {
-          setFree('b-save', '💾 Save');
+          setFree('b-save', '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Save');
           if (!res || !res.ok) { showErr('Save failed: ' + (res ? res.error : 'No response')); return; }
           localAddRecord(res.calcId, data);
           renderAll();
@@ -1873,7 +1886,7 @@
           toast('Saved — ' + res.calcId, 'ok');
         })
         .catch(function (e) {
-          setFree('b-save', '💾 Save');
+          setFree('b-save', '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Save');
           showErr('Save failed: ' + (e.message || e));
         });
     }
@@ -1888,7 +1901,7 @@
 
       gasCall('updateCalculation', data)
         .then(function (res) {
-          setFree('b-update', '✏️ Update');
+          setFree('b-update', '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg> Update');
           if (!res || !res.ok) { showErr('Update failed: ' + (res ? res.error : 'No response')); return; }
           localUpdateRecord(S.editId, data);
           renderAll();
@@ -1896,7 +1909,7 @@
           toast('Updated — ' + S.editId, 'ok');
         })
         .catch(function (e) {
-          setFree('b-update', '✏️ Update');
+          setFree('b-update', '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg> Update');
           showErr('Update failed: ' + (e.message || e));
         });
     }
@@ -1922,50 +1935,6 @@
             });
         }
       );
-    }
-
-    function generateImage() {
-      var data = collectFormData();
-      var now = new Date();
-      var dateStr = $id('f-date').value
-        ? new Date($id('f-date').value).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' })
-        : now.toLocaleDateString('en-IN');
-
-      $id('est-biz-name').textContent = (S.config && S.config.businessName) ? S.config.businessName : 'Dharamraj Calculator';
-      $id('est-customer').textContent = data.customerName || '—';
-      $id('est-date').textContent = dateStr;
-      $id('est-weight').textContent = fmtWt(data.weight) + ' g';
-      $id('est-rate').textContent = fmtINR(data.ratePerG) + ' /g';
-      $id('est-metal').textContent = fmtINR(data.metalAmount);
-      $id('est-labour').textContent = fmtINR(data.labourAmount);
-      $id('est-other').textContent = fmtINR(data.otherAmount);
-      $id('est-gst').textContent = fmtINR(data.gstAmount) + ' (' + data.gstPercent + '%)';
-      $id('est-total').textContent = fmtINR(data.totalAmount);
-      $id('est-datetime').textContent = now.toLocaleDateString('en-IN') + ' ' + now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
-
-      var card = $id('estimate-card');
-      card.style.left = '-9999px';
-      card.style.display = 'flex'; 
-
-      html2canvas(card, {
-        scale: 2.5,
-        useCORS: true,
-        backgroundColor: '#F4F7F6',
-        logging: false
-      }).then(function (canvas) {
-        card.style.left = '-9999px';
-        
-        var name = (data.customerName ? data.customerName.replace(/\s+/g, '_') : 'Estimate')
-          + '_' + (dateStr.replace(/\s/g, '-')) + '.jpg';
-        var link = document.createElement('a');
-        link.download = name;
-        link.href = canvas.toDataURL('image/jpeg', 0.95);
-        link.click();
-        toast('Estimate saved as JPEG!', 'ok');
-      }).catch(function (err) {
-        console.error(err);
-        toast('Failed to generate image', 'err');
-      });
     }
 
     function loadRecords(silent) {
@@ -2051,7 +2020,7 @@
     });
 
     // Enter key navigation
-    var FORM_FIELDS = ['f-name', 'f-date', 'f-w', 'f-r', 'f-l', 'f-o', 'f-g'];
+    var FORM_FIELDS = ['f-date', 'f-name', 'f-w', 'f-r', 'f-l', 'f-o', 'f-g'];
     FORM_FIELDS.forEach(function (id, idx) {
       var el = $id(id);
       if (!el) return;
@@ -2087,13 +2056,7 @@
     $id('b-cancel').addEventListener('click', resetForm);
     if ($id('b-refresh')) $id('b-refresh').addEventListener('click', function () { loadRecords(true); });
 
-    $id('b-print').addEventListener('click', function () {
-      $id('ph-dt').textContent = 'Printed on ' + new Date().toLocaleDateString('en-IN');
-      window.print();
-    });
-
-    $id('b-image').addEventListener('click', function () {
-      // Populate the hidden estimate card
+    function generateImage() {
       var data = collectFormData();
       var now = new Date();
       var dateStr = $id('f-date').value
@@ -2112,25 +2075,19 @@
       $id('est-total').textContent = fmtINR(data.totalAmount);
       $id('est-datetime').textContent = now.toLocaleDateString('en-IN') + ' ' + now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
 
-      // Make visible off-screen for capture
       var card = $id('estimate-card');
       card.style.left = '-9999px';
-      card.style.display = 'block';
-
-      var btn = this;
-      btn.disabled = true;
-      btn.textContent = '⏳ Saving…';
+      card.style.display = 'flex'; 
 
       html2canvas(card, {
         scale: 2.5,
         useCORS: true,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#F4F7F6',
         logging: false
       }).then(function (canvas) {
         card.style.left = '-9999px';
-        btn.disabled = false;
-        btn.textContent = '🖼️ Save';
-
+        card.style.display = 'none';
+        
         var name = (data.customerName ? data.customerName.replace(/\s+/g, '_') : 'Estimate')
           + '_' + (dateStr.replace(/\s/g, '-')) + '.jpg';
         var link = document.createElement('a');
@@ -2138,12 +2095,24 @@
         link.href = canvas.toDataURL('image/jpeg', 0.95);
         link.click();
         toast('Estimate saved as JPEG!', 'ok');
-      }).catch(function () {
+      }).catch(function (err) {
+        console.error(err);
         card.style.left = '-9999px';
-        btn.disabled = false;
-        btn.textContent = '🖼️ Save';
-        toast('Could not generate image. Try again.', 'err');
+        card.style.display = 'none';
+        toast('Failed to generate image', 'err');
       });
+    }
+
+    $id('b-image').addEventListener('click', function () {
+      var btn = this;
+      var originalText = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = 'Saving...';
+      setTimeout(function() {
+        generateImage();
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+      }, 50);
     });
 
     function onRecordsClick(e) {
