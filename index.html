@@ -25,6 +25,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cinzel:wght@600;700&display=swap"
     rel="stylesheet">
+  <!-- html2canvas for JPEG estimate export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <style>
     /* ══════════════════════════════════════════════════════════
@@ -249,33 +251,123 @@
       margin: var(--sp-lg) 0;
     }
 
-    /* Labour toggle */
-    .toggle-group {
-      display: flex;
-      background: #F3F4F6;
+    /* Labour type select */
+    #f-l-type {
+      height: 46px;
+      padding: 0 10px;
       border-radius: var(--r-md);
-      padding: 4px;
-      gap: 4px;
-    }
-
-    .t-btn {
-      flex: 1;
-      border: none;
-      background: transparent;
-      padding: 0 12px;
+      border: 1.5px solid var(--border);
+      background: #F9FAFC;
+      font-family: var(--font);
       font-size: 13px;
       font-weight: 700;
-      border-radius: var(--r-sm);
-      color: var(--text-muted);
+      color: var(--primary);
       cursor: pointer;
-      transition: 0.2s;
-      height: 100%;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      flex-shrink: 0;
+      min-width: 90px;
     }
 
-    .t-btn.active {
+    #f-l-type:focus {
+      border-color: var(--primary);
       background: #FFF;
-      color: var(--primary);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 0 0 3px var(--primary-bg);
+    }
+
+    /* ── Estimate Card (hidden in UI, captured as JPEG) ── */
+    #estimate-card {
+      position: fixed;
+      left: -9999px;
+      top: 0;
+      width: 480px;
+      background: #FFFFFF;
+      font-family: 'Inter', sans-serif;
+      padding: 0;
+      z-index: -1;
+    }
+
+    .est-header {
+      background: #033C3C;
+      padding: 28px 32px 22px;
+      text-align: center;
+    }
+
+    .est-word {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      color: #C9941E;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .est-biz {
+      font-size: 22px;
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: 0.06em;
+    }
+
+    .est-meta {
+      display: flex;
+      justify-content: space-between;
+      padding: 16px 32px;
+      background: #F0F4F4;
+      border-bottom: 1px solid #EAEAEA;
+    }
+
+    .est-meta-item { display: flex; flex-direction: column; gap: 2px; }
+    .est-meta-lbl { font-size: 10px; font-weight: 700; color: #8E9BA4; text-transform: uppercase; letter-spacing: 0.05em; }
+    .est-meta-val { font-size: 15px; font-weight: 700; color: #033C3C; }
+
+    .est-body { padding: 24px 32px; }
+
+    .est-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 11px 0;
+      border-bottom: 1px solid #F0F0F0;
+    }
+
+    .est-row:last-child { border-bottom: none; }
+
+    .est-lbl { font-size: 14px; font-weight: 600; color: #556B72; }
+    .est-val { font-size: 16px; font-weight: 700; color: #033C3C; font-variant-numeric: tabular-nums; }
+
+    .est-total-block {
+      margin: 8px 32px 0;
+      background: #033C3C;
+      border-radius: 10px;
+      padding: 20px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .est-total-lbl {
+      font-size: 14px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.75);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .est-total-val {
+      font-size: 34px;
+      font-weight: 900;
+      color: #C9941E;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .est-footer {
+      text-align: center;
+      padding: 16px 32px 24px;
+      font-size: 11px;
+      color: #AAA;
+      letter-spacing: 0.04em;
     }
 
     /* ══════════════════════════════════════════════════════════
@@ -1099,10 +1191,59 @@
     </div>
   </div>
 
-  <!-- Print header -->
+  <!-- Print header (kept for @media print fallback) -->
   <div id="ph">
     <h2 id="ph-name"></h2>
     <p id="ph-dt"></p>
+  </div>
+
+  <!-- Estimate card — captured as JPEG by html2canvas -->
+  <div id="estimate-card">
+    <div class="est-header">
+      <div class="est-word">Estimate</div>
+      <div class="est-biz" id="est-biz-name">Dharamraj Calculator</div>
+    </div>
+    <div class="est-meta">
+      <div class="est-meta-item">
+        <span class="est-meta-lbl">Customer</span>
+        <span class="est-meta-val" id="est-customer">—</span>
+      </div>
+      <div class="est-meta-item" style="text-align:right;">
+        <span class="est-meta-lbl">Date</span>
+        <span class="est-meta-val" id="est-date">—</span>
+      </div>
+    </div>
+    <div class="est-body">
+      <div class="est-row">
+        <span class="est-lbl">Weight</span>
+        <span class="est-val" id="est-weight">—</span>
+      </div>
+      <div class="est-row">
+        <span class="est-lbl">Rate / g</span>
+        <span class="est-val" id="est-rate">—</span>
+      </div>
+      <div class="est-row">
+        <span class="est-lbl">Metal Amount</span>
+        <span class="est-val" id="est-metal">—</span>
+      </div>
+      <div class="est-row">
+        <span class="est-lbl">Labour</span>
+        <span class="est-val" id="est-labour">—</span>
+      </div>
+      <div class="est-row">
+        <span class="est-lbl">Other Charges</span>
+        <span class="est-val" id="est-other">—</span>
+      </div>
+      <div class="est-row">
+        <span class="est-lbl">GST</span>
+        <span class="est-val" id="est-gst">—</span>
+      </div>
+    </div>
+    <div class="est-total-block">
+      <span class="est-total-lbl">Total Amount</span>
+      <span class="est-total-val" id="est-total">₹0.00</span>
+    </div>
+    <div class="est-footer" id="est-footer">dharamraj.calculator &nbsp;|&nbsp; <span id="est-datetime"></span></div>
   </div>
 
   <!-- Top bar -->
@@ -1155,10 +1296,10 @@
           <label>Labour</label>
           <div style="display:flex; gap:var(--sp-sm); align-items:center;">
             <input id="f-l" type="number" placeholder="0.00" step="0.01" min="0" inputmode="decimal" style="flex:1;">
-            <div class="toggle-group" id="f-l-type" style="height:46px; flex-shrink:0;">
-              <button type="button" class="t-btn active" data-val="perG">Per g</button>
-              <button type="button" class="t-btn" data-val="percent">%</button>
-            </div>
+            <select id="f-l-type">
+              <option value="perG">Per g</option>
+              <option value="percent">% of Metal</option>
+            </select>
           </div>
         </div>
 
@@ -1298,7 +1439,7 @@
       <button id="b-update" class="btn bs" disabled>✏️ Update</button>
       <button id="b-cancel" class="btn bg" style="display:none;">✕ Cancel</button>
       <button id="b-reset" class="btn bg">↺ Reset</button>
-      <button id="b-print" class="btn bg">🖨️ Print</button>
+      <button id="b-print" class="btn bg">🖼️ Save</button>
     </div>
   </div>
 
@@ -1605,12 +1746,7 @@
       $id('f-w').value = '';
       $id('f-r').value = '';
       S.labourType = 'perG';
-      var tgroup = $id('f-l-type');
-      if (tgroup && tgroup.children) {
-        Array.prototype.forEach.call(tgroup.children, function (b) {
-          b.className = (b.dataset.val === 'perG') ? 't-btn active' : 't-btn';
-        });
-      }
+      $id('f-l-type').value = 'perG';
       $id('f-l').value = '';
       $id('f-o').value = '';
       $id('f-g').value = S.config.defaultGST || 3;
@@ -1631,12 +1767,7 @@
       $id('f-w').value = rec.weight;
       $id('f-r').value = rec.ratePerG;
       S.labourType = 'perG';
-      var tgroup = $id('f-l-type');
-      if (tgroup && tgroup.children) {
-        Array.prototype.forEach.call(tgroup.children, function (b) {
-          b.className = (b.dataset.val === 'perG') ? 't-btn active' : 't-btn';
-        });
-      }
+      $id('f-l-type').value = 'perG';
       $id('f-l').value = rec.labourPerG;
       $id('f-o').value = rec.otherCharge;
       $id('f-g').value = rec.gstPercent;
@@ -1867,14 +1998,9 @@
     }
 
     // ── Event listeners ───────────────────────────────────────────
-    $id('f-l-type').addEventListener('click', function (e) {
-      if (e.target.classList.contains('t-btn')) {
-        var tgroup = $id('f-l-type');
-        Array.prototype.forEach.call(tgroup.children, function (b) { b.className = 't-btn'; });
-        e.target.className = 't-btn active';
-        S.labourType = e.target.dataset.val;
-        updateSummary();
-      }
+    $id('f-l-type').addEventListener('change', function () {
+      S.labourType = this.value;
+      updateSummary();
     });
 
     ['f-w', 'f-r', 'f-l', 'f-o', 'f-g'].forEach(function (id) {
@@ -1919,8 +2045,57 @@
     if ($id('b-refresh')) $id('b-refresh').addEventListener('click', function () { loadRecords(true); });
 
     $id('b-print').addEventListener('click', function () {
-      $id('ph-dt').textContent = 'Printed on ' + new Date().toLocaleDateString('en-IN');
-      window.print();
+      // Populate the hidden estimate card
+      var data = collectFormData();
+      var now = new Date();
+      var dateStr = $id('f-date').value
+        ? new Date($id('f-date').value).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' })
+        : now.toLocaleDateString('en-IN');
+
+      $id('est-biz-name').textContent = (S.config && S.config.businessName) ? S.config.businessName : 'Dharamraj Calculator';
+      $id('est-customer').textContent = data.customerName || '—';
+      $id('est-date').textContent = dateStr;
+      $id('est-weight').textContent = fmtWt(data.weight) + ' g';
+      $id('est-rate').textContent = fmtINR(data.ratePerG) + ' /g';
+      $id('est-metal').textContent = fmtINR(data.metalAmount);
+      $id('est-labour').textContent = fmtINR(data.labourAmount);
+      $id('est-other').textContent = fmtINR(data.otherAmount);
+      $id('est-gst').textContent = fmtINR(data.gstAmount) + ' (' + data.gstPercent + '%)';
+      $id('est-total').textContent = fmtINR(data.totalAmount);
+      $id('est-datetime').textContent = now.toLocaleDateString('en-IN') + ' ' + now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+
+      // Make visible off-screen for capture
+      var card = $id('estimate-card');
+      card.style.left = '-9999px';
+      card.style.display = 'block';
+
+      var btn = this;
+      btn.disabled = true;
+      btn.textContent = '⏳ Saving…';
+
+      html2canvas(card, {
+        scale: 2.5,
+        useCORS: true,
+        backgroundColor: '#FFFFFF',
+        logging: false
+      }).then(function (canvas) {
+        card.style.left = '-9999px';
+        btn.disabled = false;
+        btn.textContent = '🖼️ Save';
+
+        var name = (data.customerName ? data.customerName.replace(/\s+/g, '_') : 'Estimate')
+          + '_' + (dateStr.replace(/\s/g, '-')) + '.jpg';
+        var link = document.createElement('a');
+        link.download = name;
+        link.href = canvas.toDataURL('image/jpeg', 0.95);
+        link.click();
+        toast('Estimate saved as JPEG!', 'ok');
+      }).catch(function () {
+        card.style.left = '-9999px';
+        btn.disabled = false;
+        btn.textContent = '🖼️ Save';
+        toast('Could not generate image. Try again.', 'err');
+      });
     });
 
     function onRecordsClick(e) {
