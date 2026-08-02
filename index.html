@@ -1226,7 +1226,7 @@
         <span class="est-val" id="est-weight">—</span>
       </div>
       <div class="est-row">
-        <span class="est-lbl">Rate / g</span>
+        <span class="est-lbl">Rate 10/g</span>
         <span class="est-val" id="est-rate">—</span>
       </div>
       <div class="est-row">
@@ -1294,7 +1294,7 @@
 
         <!-- Rate -->
         <div class="field">
-          <label for="f-r">Rate / g (₹)</label>
+          <label for="f-r">Rate 10/g (₹)</label>
           <input id="f-r" type="number" placeholder="0.00" step="0.01" min="0" inputmode="decimal">
         </div>
 
@@ -1302,9 +1302,9 @@
         <div class="field">
           <label>Labour</label>
           <div style="display:flex; gap:var(--sp-sm); align-items:center;">
-            <input id="f-l" type="number" placeholder="0.00" step="0.01" min="0" inputmode="decimal" style="flex:1;">
-            <select id="f-l-type">
-              <option value="perG">10/g</option>
+            <input id="f-l" type="number" placeholder="0.00" step="0.01" min="0" inputmode="decimal" style="flex:1; min-width:0;">
+            <select id="f-l-type" style="flex:0 0 100px;">
+              <option value="perG">Per g</option>
               <option value="percent">% of Metal</option>
             </select>
           </div>
@@ -1630,9 +1630,9 @@
     }
 
     var TABLE_COLS = [
-      { k: 'calcId', l: 'ID' },
-      { k: 'date', l: 'Date' },
       { k: 'customerName', l: 'Customer' },
+      { k: 'date', l: 'Date' },
+      { k: 'calcId', l: 'ID' },
       { k: 'weight', l: 'Weight' },
       { k: 'totalAmount', l: 'Total' }
     ];
@@ -1640,6 +1640,7 @@
     function actionBtns(id) {
       var eid = esc(id);
       return '<button class="ab edit" data-id="' + eid + '">Edit</button>'
+        + '<button class="ab print" data-id="' + eid + '">Print</button>'
         + '<button class="ab del"  data-id="' + eid + '">Delete</button>';
     }
 
@@ -2177,6 +2178,12 @@
         if (btn.classList.contains('edit')) {
           var rec = S.records.find(function (r) { return r.calcId === id; });
           if (rec) fillForm(rec);
+        } else if (btn.classList.contains('print')) {
+          var rec = S.records.find(function (r) { return r.calcId === id; });
+          if (rec) {
+            fillForm(rec);
+            setTimeout(generateImage, 100);
+          }
         } else if (btn.classList.contains('del')) {
           doDelete(id);
         }
