@@ -23,34 +23,43 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cinzel:wght@600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cinzel:wght@600;700&display=swap"
     rel="stylesheet">
+
   <style>
-    /* ── Reset & Variables (Light Teal Theme) ──────────────────────── */
+    /* ══════════════════════════════════════════════════════════
+       DESIGN SYSTEM — Variables & Reset
+    ══════════════════════════════════════════════════════════ */
     :root {
       --font: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-serif: 'Cinzel', Georgia, serif;
+
+      /* Palette */
       --bg: #F4F5EC;
       --surface: #FFFFFF;
-      --elevated: #FFFFFF;
       --border: #EAEAEA;
       --text-main: #033C3C;
-      --text-secondary: #556B72;
+      --text-sec: #556B72;
       --text-muted: #8E9BA4;
       --primary: #033C3C;
-      --primary-hover: #022a2a;
+      --primary-hov: #022a2a;
       --primary-bg: #E6EFEF;
-      --gold: #D4AF37;
+      --gold: #C9941E;
+      --gold-lt: #FBF3E3;
       --danger: #EF4B4B;
-      --danger-hover: #D83A3A;
+      --danger-hov: #D83A3A;
       --danger-bg: #FEE5E5;
       --success: #3FB568;
       --success-bg: #DDF4E4;
 
-      --radius-lg: 12px;
-      --radius-md: 8px;
-      --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.04);
+      /* Shape */
+      --r-lg: 12px;
+      --r-md: 8px;
+      --r-sm: 6px;
+      --sh-lg: 0 4px 20px rgba(0, 0, 0, 0.07);
+      --sh-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
 
-      /* Spacing System */
+      /* Spacing */
       --sp-xs: 4px;
       --sp-sm: 8px;
       --sp-md: 16px;
@@ -58,9 +67,7 @@
       --sp-xl: 32px;
     }
 
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -81,16 +88,9 @@
       padding-bottom: 120px;
     }
 
-    /* ── Typography ─────────────────────────────────────────────── */
-    h1,
-    h2 {
-      font-weight: 700;
-      color: var(--primary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    /* ── Topbar (Navbar — Logo Only, Centered) ──────────────── */
+    /* ══════════════════════════════════════════════════════════
+       TOPBAR
+    ══════════════════════════════════════════════════════════ */
     #topbar {
       position: sticky;
       top: 0;
@@ -115,7 +115,9 @@
       display: block;
     }
 
-    /* ── Layout & Containers ────────────────────────────────────── */
+    /* ══════════════════════════════════════════════════════════
+       LAYOUT & CONTAINERS
+    ══════════════════════════════════════════════════════════ */
     .wrap {
       margin: var(--sp-lg) auto;
       display: flex;
@@ -125,13 +127,14 @@
 
     .card-container {
       background: var(--surface);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-lg);
+      border-radius: var(--r-lg);
+      box-shadow: var(--sh-lg);
       border: 1px solid var(--border);
+      padding: var(--sp-xl);
     }
 
     .slabel {
-      font-size: 18px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--primary);
       margin-bottom: var(--sp-lg);
@@ -156,7 +159,7 @@
       background: var(--primary-bg);
       color: var(--primary);
       border: 1px solid var(--primary);
-      transition: all 0.2s;
+      transition: background-color 0.15s, color 0.15s;
       white-space: nowrap;
     }
 
@@ -166,51 +169,52 @@
       border-color: var(--gold);
     }
 
-    /* ── Forms ──────────────────────────────────────────────────── */
+    /* ══════════════════════════════════════════════════════════
+       FORM GRID & FIELDS
+    ══════════════════════════════════════════════════════════ */
     .grid2 {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: var(--sp-md);
     }
 
-    .full {
-      grid-column: 1 / -1;
-    }
+    .full { grid-column: 1 / -1; }
 
     .field {
       display: flex;
       flex-direction: column;
-      gap: var(--sp-sm);
+      gap: 5px;
     }
 
     .field label {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
-      color: var(--text-main);
+      color: var(--text-sec);
       text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
     .field input,
-    select {
-      height: 48px;
-      padding: 0 16px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
+    .field select {
+      height: 46px;
+      padding: 0 14px;
+      border-radius: var(--r-md);
+      border: 1.5px solid var(--border);
       background: #F9FAFC;
       font-family: var(--font);
       font-size: 15px;
       color: var(--text-main);
-      transition: all 0.2s;
+      transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
       outline: none;
       width: 100%;
       font-weight: 600;
     }
 
     .field input:focus,
-    select:focus {
+    .field select:focus {
       border-color: var(--primary);
       background: #FFF;
-      box-shadow: 0 0 0 2px var(--primary-bg);
+      box-shadow: 0 0 0 3px var(--primary-bg);
     }
 
     .field input::placeholder {
@@ -218,14 +222,25 @@
       font-weight: 400;
     }
 
-    /* iOS Safari date input fix — prevent overflow */
+    /* iOS Safari date input fix */
     input[type="date"] {
       width: 100%;
       max-width: 100%;
       min-width: 0;
-      box-sizing: border-box;
       -webkit-appearance: none;
       appearance: none;
+    }
+
+    #err-banner {
+      display: none;
+      background: var(--danger-bg);
+      border: 1px solid rgba(239, 75, 75, 0.3);
+      color: var(--danger);
+      font-size: 13px;
+      padding: 12px 16px;
+      border-radius: var(--r-md);
+      margin-bottom: var(--sp-md);
+      font-weight: 600;
     }
 
     .divider {
@@ -234,10 +249,11 @@
       margin: var(--sp-lg) 0;
     }
 
+    /* Labour toggle */
     .toggle-group {
       display: flex;
       background: #F3F4F6;
-      border-radius: var(--radius-md);
+      border-radius: var(--r-md);
       padding: 4px;
       gap: 4px;
     }
@@ -249,7 +265,7 @@
       padding: 0 12px;
       font-size: 13px;
       font-weight: 700;
-      border-radius: 6px;
+      border-radius: var(--r-sm);
       color: var(--text-muted);
       cursor: pointer;
       transition: 0.2s;
@@ -257,104 +273,74 @@
     }
 
     .t-btn.active {
-      background: #FFFFFF;
+      background: #FFF;
       color: var(--primary);
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
 
-    /* ── Summary ────────────────────────────────────────────────── */
-    .srow {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
+    /* ══════════════════════════════════════════════════════════
+       SUMMARY PANEL — Mahakali grid-box style
+    ══════════════════════════════════════════════════════════ */
+    .sum-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--sp-sm);
+      margin-bottom: var(--sp-md);
     }
 
-    .srow:last-of-type {
-      border-bottom: none;
-    }
-
-    .sk {
-      font-size: 14px;
-      color: var(--text-secondary);
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-
-    .sv {
-      font-size: 16px;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-      color: var(--text-main);
-    }
-
-    .srow.big {
-      margin-top: 8px;
-      padding-top: 16px;
-      border-top: 2px solid var(--border);
-      border-bottom: none;
-    }
-
-    .srow.big .sk {
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--primary);
-    }
-
-    .srow.big .sv {
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--success);
-      background: var(--success-bg);
-      padding: 4px 12px;
-      border-radius: 6px;
-    }
-
-    .prow {
-      display: flex;
-      gap: var(--sp-md);
-      margin-top: var(--sp-lg);
-    }
-
-    .pbox {
-      flex: 1;
-      text-align: center;
+    .sbox {
       background: #F9FAFC;
-      border-radius: var(--radius-md);
-      padding: var(--sp-md);
       border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 10px 8px;
+      text-align: center;
     }
 
-    .plbl {
-      font-size: 12px;
+    .sbox-lbl {
+      font-size: 10px;
       font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
     }
 
-    .pval {
-      display: block;
-      font-size: 16px;
-      font-weight: 800;
-      margin-top: 6px;
-      color: var(--primary);
-    }
-
-    /* ── Error & Loader ─────────────────────────────────────────── */
-    #err-banner {
-      display: none;
-      background: var(--danger-bg);
-      border: 1px solid rgba(239, 75, 75, 0.3);
-      color: var(--danger);
+    .sbox-val {
       font-size: 14px;
-      padding: 14px 16px;
-      border-radius: var(--radius-md);
-      margin-bottom: var(--sp-lg);
-      font-weight: 600;
+      font-weight: 800;
+      color: var(--text-main);
+      font-variant-numeric: tabular-nums;
     }
 
+    /* Grand total price row */
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--sp-md);
+      background: var(--primary-bg);
+      border-radius: var(--r-md);
+      border: 2px solid var(--primary);
+    }
+
+    .price-lbl {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .price-val {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       LOADER & SKELETON
+    ══════════════════════════════════════════════════════════ */
     #loader {
       position: fixed;
       inset: 0;
@@ -374,44 +360,64 @@
       animation: rot 0.8s linear infinite;
     }
 
-    @keyframes rot {
-      to {
-        transform: rotate(360deg);
-      }
+    @keyframes rot { to { transform: rotate(360deg); } }
+
+    /* Skeleton shimmer */
+    .skel-wrap {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    /* ── Records Toolbar ────────────────────────────────────────── */
-    #srch-wrap {
-      margin-top: 0;
+    .skel-row {
+      height: 46px;
+      border-radius: var(--r-md);
+      background: linear-gradient(90deg, #e8eeee 25%, #d4e0e0 50%, #e8eeee 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s ease-in-out infinite;
     }
+
+    .skel-row:nth-child(even) { width: 85%; }
+
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       RECORDS TOOLBAR
+    ══════════════════════════════════════════════════════════ */
+    #rec-section { background: #F0F4F4; }
 
     .rbar {
       display: flex;
       flex-wrap: wrap;
       gap: var(--sp-md);
-      margin-bottom: var(--sp-lg);
+      margin-bottom: var(--sp-md);
     }
 
-    .sbox {
+    .sbox-search {
       flex: 1;
       min-width: 220px;
       position: relative;
     }
 
-    .sbox svg {
+    .sbox-search svg {
       position: absolute;
       left: 14px;
       top: 50%;
       transform: translateY(-50%);
       color: var(--text-muted);
+      pointer-events: none;
     }
 
     #q {
       width: 100%;
-      height: 48px;
+      height: 46px;
       padding: 0 16px 0 42px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      border: 1.5px solid var(--border);
       background: #F9FAFC;
       font-family: var(--font);
       font-size: 15px;
@@ -424,32 +430,24 @@
     #q:focus {
       border-color: var(--primary);
       background: #FFF;
-      box-shadow: 0 0 0 2px var(--primary-bg);
+      box-shadow: 0 0 0 3px var(--primary-bg);
     }
 
-    #q::placeholder {
-      color: var(--text-muted);
-      font-weight: 400;
-    }
+    #q::placeholder { color: var(--text-muted); font-weight: 400; }
 
-    .sgrp {
-      display: flex;
-      align-items: center;
-      gap: var(--sp-sm);
-    }
+    .sgrp { display: flex; align-items: center; gap: var(--sp-sm); }
 
     .sgrp-lbl {
       font-size: 13px;
       font-weight: 700;
-      color: var(--text-secondary);
+      color: var(--text-sec);
       text-transform: uppercase;
     }
 
-    #sf,
-    #sd {
-      height: 48px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
+    #sf, #sd {
+      height: 46px;
+      border-radius: var(--r-md);
+      border: 1.5px solid var(--border);
       background: #F9FAFC;
       font-family: var(--font);
       font-size: 14px;
@@ -460,18 +458,15 @@
       color: var(--primary);
     }
 
-    #sf:focus,
-    #sd:focus {
+    #sf:focus, #sd:focus {
       border-color: var(--primary);
       background: #FFF;
     }
 
     #sd {
-      width: 48px;
+      width: 46px;
       padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      text-align: center;
       font-size: 18px;
     }
 
@@ -482,9 +477,11 @@
       font-weight: 600;
     }
 
-    /* ── Table (Desktop) ────────────────────────────────────────── */
+    /* ══════════════════════════════════════════════════════════
+       TABLE (Desktop)
+    ══════════════════════════════════════════════════════════ */
     .tbl-outer {
-      border-radius: var(--radius-lg);
+      border-radius: var(--r-lg);
       border: 1px solid var(--border);
       overflow-x: auto;
       background: var(--surface);
@@ -499,130 +496,96 @@
 
     thead th {
       background: var(--primary);
-      padding: 0 16px;
-      height: 52px;
-      font-size: 13px;
+      padding: 0 14px;
+      height: 48px;
+      font-size: 12px;
       font-weight: 700;
-      color: #FFFFFF;
+      color: #FFF;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
       cursor: pointer;
       user-select: none;
       transition: background 0.2s;
-      border-bottom: none;
     }
 
-    thead th:hover {
-      background: var(--primary-hover);
-    }
+    thead th:hover { background: var(--primary-hov); }
 
-    .thi {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    .thi { display: flex; align-items: center; gap: 6px; }
 
-    .arr {
-      opacity: 0.5;
-      font-size: 14px;
-    }
-
-    th.on .arr {
-      opacity: 1;
-      color: var(--gold);
-    }
+    .arr { opacity: 0.5; font-size: 14px; }
+    th.on .arr { opacity: 1; color: var(--gold); }
 
     tbody tr {
       border-bottom: 1px solid var(--border);
-      transition: background 0.2s;
-      height: 52px;
+      transition: background 0.15s;
+      height: 50px;
     }
 
-    tbody tr:last-child {
-      border-bottom: none;
-    }
-
-    tbody tr:hover {
-      background: #F9FAFC;
-    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #F9FAFC; }
 
     td {
       padding: 0 14px;
-      font-size: 14px;
-      font-weight: 700;
+      font-size: 13px;
+      font-weight: 600;
       vertical-align: middle;
       color: var(--text-main);
     }
 
-    /* ID pill is a SPAN inside the td, not the td itself */
     .cid-pill {
       display: inline-block;
       font-size: 11px;
       font-weight: 700;
-      background: #E6EFEF;
+      background: var(--primary-bg);
       color: var(--primary);
       padding: 3px 10px;
       border-radius: 999px;
       white-space: nowrap;
-      line-height: 1.5;
     }
 
     .camt {
       font-weight: 800;
       font-variant-numeric: tabular-nums;
+      color: var(--primary);
     }
 
-    .acts {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
+    .acts { display: flex; gap: 6px; align-items: center; }
 
-    /* Action Buttons (Table & Card) */
+    /* Action Buttons */
     .ab {
-      height: 36px;
-      padding: 0 14px;
-      border-radius: var(--radius-md);
-      font-size: 13px;
+      height: 32px;
+      padding: 0 12px;
+      border-radius: var(--r-sm);
+      font-size: 12px;
       font-weight: 700;
       font-family: var(--font);
       border: 1px solid var(--border);
-      background: #FFFFFF;
+      background: #FFF;
       color: var(--primary);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: background-color 0.12s, color 0.12s, border-color 0.12s;
+      white-space: nowrap;
     }
 
-    .ab:hover {
-      background: #F3F4F6;
-    }
+    .ab:hover { background: #F3F4F6; }
 
-    .ab.del {
-      color: var(--danger);
-      border-color: var(--danger-bg);
-    }
+    .ab.del { color: var(--danger); border-color: var(--danger-bg); }
+    .ab.del:hover { background: var(--danger-bg); border-color: var(--danger); }
 
-    .ab.del:hover {
-      background: var(--danger-bg);
-      border-color: var(--danger);
-    }
-
-    /* ── Cards (Tablet & Mobile) ──────────────────────────────── */
-    .card-list {
-      display: none;
-    }
+    /* ══════════════════════════════════════════════════════════
+       CARDS (Mobile & Tablet)
+    ══════════════════════════════════════════════════════════ */
+    .card-list { display: none; }
 
     .record-card {
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 10px 12px;
+      padding: 12px;
       background: var(--surface);
       transition: transform 0.15s;
     }
 
-    .record-card:active {
-      transform: scale(0.99);
-    }
+    .record-card:active { transform: scale(0.99); }
 
     .rc-header {
       display: flex;
@@ -638,17 +601,12 @@
       font-weight: 700;
       color: var(--primary);
       font-size: 11px;
-      background: #E6EFEF;
+      background: var(--primary-bg);
       padding: 3px 8px;
       border-radius: 999px;
-      white-space: nowrap;
     }
 
-    .rc-date {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
+    .rc-date { font-size: 12px; color: var(--text-muted); font-weight: 600; }
 
     .rc-body {
       display: grid;
@@ -657,54 +615,44 @@
       margin-bottom: 8px;
     }
 
-    .rc-val {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-    }
+    .rc-val { display: flex; flex-direction: column; gap: 1px; }
 
     .rc-lbl {
       font-size: 10px;
-      color: var(--text-secondary);
+      color: var(--text-sec);
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.03em;
     }
 
-    .rc-txt {
-      font-size: 13px;
-      font-weight: 800;
-      color: var(--text-main);
-    }
+    .rc-txt { font-size: 13px; font-weight: 700; color: var(--text-main); }
 
     .rc-acts {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       justify-content: flex-end;
       border-top: 1px solid var(--border);
       padding-top: 8px;
     }
 
-    .rc-acts .ab {
-      height: 34px;
-      padding: 0 14px;
-      font-size: 12px;
-    }
+    .rc-acts .ab { height: 30px; padding: 0 10px; font-size: 11px; }
 
-    /* ── Action Bar ─────────────────────────────────────────────── */
+    /* ══════════════════════════════════════════════════════════
+       ACTION BAR (bottom fixed)
+    ══════════════════════════════════════════════════════════ */
     #abar {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       z-index: 50;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-top: 1px solid var(--border);
       padding: var(--sp-md) var(--sp-lg);
       padding-bottom: max(var(--sp-md), env(safe-area-inset-bottom));
-      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
       display: flex;
       justify-content: center;
     }
@@ -719,69 +667,43 @@
     .btn {
       flex: 1;
       height: 48px;
-      border-radius: var(--radius-md);
+      border-radius: var(--r-md);
       border: none;
       font-size: 15px;
       font-weight: 700;
       font-family: var(--font);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: background-color 0.12s, transform 0.1s, opacity 0.12s;
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 5px;
     }
 
-    .btn:active {
-      transform: scale(0.97);
-    }
+    .btn:active:not(:disabled) { transform: scale(0.97); }
 
     .btn:disabled {
-      opacity: 0.5;
+      opacity: 0.4;
       cursor: not-allowed;
       transform: none;
-      box-shadow: none !important;
-      border-color: var(--border);
-      background: #F3F4F6;
-      color: var(--text-muted);
+      background: #F3F4F6 !important;
+      color: var(--text-muted) !important;
+      border: 1px solid var(--border) !important;
     }
 
-    /* Primary Button (Dark Teal) */
-    .bp {
-      background: var(--primary);
-      color: #FFFFFF;
-    }
+    .bp { background: var(--primary); color: #FFF; }
+    .bp:hover:not(:disabled) { background: var(--primary-hov); }
 
-    .bp:hover:not(:disabled) {
-      background: var(--primary-hover);
-    }
+    .bs { background: #FFF; border: 1.5px solid var(--primary); color: var(--primary); }
+    .bs:hover:not(:disabled) { background: var(--primary-bg); }
 
-    /* Secondary Button */
-    .bs {
-      background: #FFFFFF;
-      border: 1px solid var(--primary);
-      color: var(--primary);
-    }
+    .bg { background: transparent; border: 1.5px solid var(--border); color: var(--text-sec); }
+    .bg:hover:not(:disabled) { background: #F9FAFC; color: var(--text-main); }
 
-    .bs:hover:not(:disabled) {
-      background: var(--primary-bg);
-    }
-
-    /* Ghost Button */
-    .bg {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-    }
-
-    .bg:hover:not(:disabled) {
-      background: #F9FAFC;
-      color: var(--text-main);
-    }
-
-    /* ── Refresh / btn-icon ─────────────────────────────────────── */
+    /* Icon Buttons (refresh, bulk-delete) */
     .btn-icon {
       background: none;
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       color: var(--primary);
       font-family: var(--font);
       font-size: 13px;
@@ -790,36 +712,19 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s;
-      padding: 8px 14px;
+      transition: background-color 0.12s, border-color 0.12s, transform 0.1s;
+      padding: 7px 12px;
       border-radius: 8px;
     }
 
-    .btn-icon svg {
-      flex-shrink: 0;
-      display: block;
-    }
+    .btn-icon:hover { background: var(--primary-bg); border-color: var(--primary); }
+    .btn-icon:active { transform: scale(0.95); }
 
-    .btn-icon:hover {
-      background: var(--primary-bg);
-      border-color: var(--primary);
-    }
+    .btn-icon.spinning svg { animation: rot 1s linear infinite; }
 
-    .btn-icon:active {
-      transform: scale(0.95);
-    }
-
-    .btn-icon.spinning svg {
-      animation: rot 1s linear infinite;
-    }
-
-    /* Records section tint */
-    #rec-section {
-      background: #F0F4F4;
-      /* very subtle teal tint to distinguish from form */
-    }
-
-    /* ── Toast ──────────────────────────────────────────────────── */
+    /* ══════════════════════════════════════════════════════════
+       TOAST
+    ══════════════════════════════════════════════════════════ */
     #toast {
       position: fixed;
       bottom: 100px;
@@ -827,211 +732,105 @@
       transform: translate(-50%, 20px);
       z-index: 70;
       background: var(--text-main);
-      color: #FFFFFF;
-      padding: 14px 24px;
+      color: #FFF;
+      padding: 12px 24px;
       border-radius: 9999px;
       font-size: 14px;
       font-weight: 700;
-      box-shadow: var(--shadow-lg);
+      box-shadow: var(--sh-lg);
       opacity: 0;
       pointer-events: none;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+      max-width: 90vw;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    #toast.show {
-      opacity: 1;
-      transform: translate(-50%, 0);
+    #toast.show { opacity: 1; transform: translate(-50%, 0); }
+    #toast.ok { background: var(--success); }
+    #toast.err { background: var(--danger); }
+
+    /* ══════════════════════════════════════════════════════════
+       DELETE CONFIRM MODAL
+    ══════════════════════════════════════════════════════════ */
+    #modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+      background: rgba(0, 0, 0, 0.52);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--sp-lg);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s;
     }
 
-    #toast.ok {
-      background: var(--success);
+    #modal-overlay.show { opacity: 1; visibility: visible; }
+
+    .modal-card {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: var(--sp-xl);
+      max-width: 360px;
+      width: 100%;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.22);
+      transform: scale(0.94);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    #toast.err {
-      background: var(--danger);
+    #modal-overlay.show .modal-card { transform: scale(1); }
+
+    .modal-icon {
+      width: 52px;
+      height: 52px;
+      background: var(--danger-bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--sp-md);
     }
 
-    /* ── Print (Well-Designed, Larger) ─────────────────────────── */
-    @media print {
-      @page {
-        size: A4 portrait;
-        margin: 14mm 16mm;
-      }
+    .modal-icon svg { color: var(--danger); }
 
-      /* Hide non-print elements */
-      #topbar,
-      #abar,
-      #srch-wrap,
-      .acts,
-      .rc-acts,
-      .card-container:nth-child(2),
-      .prow,
-      .divider,
-      #err-banner,
-      #records-total-bar {
-        display: none !important;
-      }
-
-      html, body {
-        background: #FFF !important;
-        color: #111 !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        font-size: 13px !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-
-      body { padding-bottom: 0 !important; }
-
-      .wrap {
-        max-width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        gap: 0 !important;
-      }
-
-      .card-container {
-        box-shadow: none !important;
-        border: none !important;
-        padding: 10px 0 !important;
-        background: transparent !important;
-      }
-
-      /* ── Branded Print Header ── */
-      #ph {
-        display: block !important;
-        margin-bottom: 18px;
-        padding-bottom: 12px;
-        border-bottom: 3px double #033C3C;
-        text-align: center;
-      }
-
-      #ph h2 {
-        font-size: 26px !important;
-        font-family: 'Cinzel', Georgia, serif;
-        color: #033C3C !important;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        margin-bottom: 4px;
-      }
-
-      #ph p {
-        font-size: 11px !important;
-        color: #666;
-        letter-spacing: 0.04em;
-      }
-
-      /* Section label */
-      .slabel {
-        font-size: 13px !important;
-        margin-bottom: 10px !important;
-        letter-spacing: 0.05em;
-        color: #033C3C !important;
-        border-bottom: 1px solid #C0CFD0;
-        padding-bottom: 6px;
-      }
-
-      /* 2-col grid */
-      .grid2 {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        gap: 8px 14px !important;
-      }
-
-      .full { grid-column: 1 / -1 !important; }
-
-      .field { gap: 3px !important; }
-
-      .field label {
-        font-size: 10px !important;
-        color: #555;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-      }
-
-      .field input {
-        height: 30px !important;
-        font-size: 13px !important;
-        background: transparent !important;
-        border: none !important;
-        border-bottom: 1px solid #CCC !important;
-        color: #111 !important;
-        padding: 0 2px !important;
-        font-weight: 700;
-      }
-
-      .toggle-group { display: none !important; }
-
-      /* Summary rows — bigger & clearer */
-      .srow {
-        padding: 7px 0 !important;
-        border-bottom: 1px solid #E0E0E0 !important;
-      }
-
-      .sk {
-        font-size: 12px !important;
-        color: #555;
-        font-weight: 600;
-        text-transform: uppercase;
-      }
-
-      .sv {
-        font-size: 14px !important;
-        color: #111 !important;
-        font-weight: 700;
-      }
-
-      /* Grand total row — very prominent */
-      .srow.big {
-        border-top: 2.5px solid #033C3C !important;
-        border-bottom: 2.5px solid #033C3C !important;
-        padding: 10px 0 !important;
-        margin-top: 4px !important;
-      }
-
-      .srow.big .sk {
-        font-size: 15px !important;
-        font-weight: 800;
-        color: #033C3C !important;
-      }
-
-      .srow.big .sv {
-        font-size: 20px !important;
-        font-weight: 900 !important;
-        color: #033C3C !important;
-        background: none !important;
-        padding: 0 !important;
-      }
-
-      /* Print footer line */
-      body::after {
-        content: 'Dharamraj Calculator — Confidential';
-        display: block;
-        margin-top: 24px;
-        padding-top: 8px;
-        border-top: 1px solid #CCC;
-        font-size: 10px;
-        color: #AAA;
-        text-align: center;
-      }
+    .modal-title {
+      font-size: 18px;
+      font-weight: 800;
+      text-align: center;
+      color: var(--text-main);
+      margin-bottom: 8px;
     }
 
-    #ph { display: none; }
-    #ph h2 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
-    #ph p  { font-size: 14px; color: var(--text-muted); }
+    .modal-body {
+      font-size: 14px;
+      color: var(--text-sec);
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: var(--sp-lg);
+    }
 
-    /* ── Records Total Bar ──────────────────────────────────────── */
+    .modal-acts { display: flex; gap: var(--sp-md); }
+    .modal-acts .btn { height: 44px; font-size: 14px; }
+
+    .btn-danger { background: var(--danger); color: #FFF; border: none; }
+    .btn-danger:hover:not(:disabled) { background: var(--danger-hov); }
+
+    /* ══════════════════════════════════════════════════════════
+       RECORDS TOTAL BAR
+    ══════════════════════════════════════════════════════════ */
     #records-total-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       background: linear-gradient(135deg, var(--primary) 0%, #045a5a 100%);
       color: #FFF;
-      border-radius: var(--radius-md);
+      border-radius: var(--r-md);
       padding: 14px 20px;
       margin-top: var(--sp-lg);
-      box-shadow: 0 2px 10px rgba(3,60,60,0.18);
+      box-shadow: 0 2px 10px rgba(3, 60, 60, 0.18);
       gap: var(--sp-md);
       flex-wrap: wrap;
     }
@@ -1060,269 +859,216 @@
       color: #FFF;
     }
 
-    .rtb-val.grand {
-      font-size: 22px;
-      color: var(--gold);
-    }
+    .rtb-val.grand { font-size: 22px; color: var(--gold); }
 
     .rtb-divider {
       width: 1px;
       height: 36px;
-      background: rgba(255,255,255,0.2);
+      background: rgba(255, 255, 255, 0.2);
       flex-shrink: 0;
     }
 
-    @media (max-width: 768px) {
-      #records-total-bar {
-        padding: 12px 14px;
-        gap: 10px;
+    /* ══════════════════════════════════════════════════════════
+       PRINT (Well-Designed, Larger)
+    ══════════════════════════════════════════════════════════ */
+    #ph { display: none; }
+    #ph h2 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+    #ph p  { font-size: 14px; color: var(--text-muted); }
+
+    @media print {
+      @page { size: A4 portrait; margin: 14mm 16mm; }
+
+      #topbar, #abar, #srch-wrap, .acts, .rc-acts,
+      .card-container:nth-child(2), .divider,
+      #err-banner, #records-total-bar, #modal-overlay { display: none !important; }
+
+      html, body {
+        background: #FFF !important;
+        color: #111 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        font-size: 13px !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
       }
+
+      body { padding-bottom: 0 !important; }
+
+      .wrap { max-width: 100% !important; margin: 0 !important; padding: 0 !important; gap: 0 !important; }
+
+      .card-container {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 10px 0 !important;
+        background: transparent !important;
+      }
+
+      #ph {
+        display: block !important;
+        margin-bottom: 18px;
+        padding-bottom: 12px;
+        border-bottom: 3px double #033C3C;
+        text-align: center;
+      }
+
+      #ph h2 {
+        font-size: 26px !important;
+        font-family: 'Cinzel', Georgia, serif;
+        color: #033C3C !important;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+
+      #ph p { font-size: 11px !important; color: #666; letter-spacing: 0.04em; }
+
+      .slabel {
+        font-size: 13px !important;
+        margin-bottom: 10px !important;
+        color: #033C3C !important;
+        border-bottom: 1px solid #C0CFD0;
+        padding-bottom: 6px;
+      }
+
+      .grid2 { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 8px 14px !important; }
+      .full { grid-column: 1 / -1 !important; }
+      .field { gap: 3px !important; }
+
+      .field label { font-size: 10px !important; color: #555; }
+
+      .field input {
+        height: 30px !important;
+        font-size: 13px !important;
+        background: transparent !important;
+        border: none !important;
+        border-bottom: 1px solid #CCC !important;
+        color: #111 !important;
+        padding: 0 2px !important;
+        font-weight: 700;
+      }
+
+      .toggle-group { display: none !important; }
+
+      /* Summary in print — use srow style */
+      .sum-grid {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 6px !important;
+        margin-bottom: 8px !important;
+      }
+
+      .sbox {
+        border: 1px solid #CCC !important;
+        background: transparent !important;
+        padding: 6px 4px !important;
+      }
+
+      .sbox-lbl { font-size: 9px !important; }
+      .sbox-val { font-size: 12px !important; }
+
+      .price-row {
+        border: 2px solid #033C3C !important;
+        background: none !important;
+        padding: 8px 12px !important;
+      }
+
+      .price-lbl { font-size: 13px !important; color: #033C3C !important; }
+
+      .price-val {
+        font-size: 20px !important;
+        font-weight: 900 !important;
+        color: #033C3C !important;
+      }
+
+      body::after {
+        content: 'Dharamraj Calculator — Confidential';
+        display: block;
+        margin-top: 24px;
+        padding-top: 8px;
+        border-top: 1px solid #CCC;
+        font-size: 10px;
+        color: #AAA;
+        text-align: center;
+      }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       RESPONSIVE BREAKPOINTS
+    ══════════════════════════════════════════════════════════ */
+
+    /* Desktop (≥ 901px) */
+    @media (min-width: 901px) {
+      .tb-inner { height: 100px; max-width: 1280px; }
+      #navbar-logo { height: 80px; }
+
+      .wrap { max-width: 1280px; padding: 0 32px; gap: var(--sp-lg); margin-top: var(--sp-xl); }
+
+      .card-container { padding: var(--sp-xl); }
+    }
+
+    /* Tablet (769–900px) */
+    @media (min-width: 769px) and (max-width: 900px) {
+      .tb-inner { height: 84px; }
+      #navbar-logo { height: 64px; }
+
+      .wrap { max-width: 100%; padding: 0 24px; gap: var(--sp-lg); }
+
+      .card-container { padding: 24px; }
+
+      .tbl-outer { display: none; }
+      .card-list { display: flex; flex-direction: column; gap: var(--sp-md); }
+
+      .sum-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* Mobile (≤ 768px) */
+    @media (max-width: 768px) {
+      .tb-inner { height: 72px; padding: 8px 14px; }
+      #navbar-logo { height: 56px; }
+
+      .grid2 { grid-template-columns: repeat(2, 1fr); gap: var(--sp-sm); }
+
+      .wrap { max-width: 100%; padding: 0 14px; margin: 10px auto; gap: var(--sp-md); }
+
+      .card-container { padding: 14px; }
+
+      .tbl-outer { display: none; }
+      .card-list { display: flex; flex-direction: column; gap: 6px; }
+
+      .record-card { padding: 10px 12px; }
+      .rc-header { margin-bottom: 6px; padding-bottom: 6px; }
+      .rc-body { gap: 4px 8px; margin-bottom: 6px; }
+      .rc-lbl { font-size: 9px; }
+      .rc-txt { font-size: 12px; }
+      .rc-acts { padding-top: 6px; gap: 6px; }
+      .rc-acts .ab { height: 28px; padding: 0 8px; font-size: 11px; }
+
+      .slabel { font-size: 13px; margin-bottom: 12px; }
+
+      .sum-grid { grid-template-columns: repeat(2, 1fr); }
+      .price-val { font-size: 22px; }
+
+      .rbar { flex-direction: column; align-items: stretch; gap: var(--sp-sm); }
+      .sbox-search { min-width: 100%; }
+      .sgrp { justify-content: space-between; }
+      .sgrp-lbl { display: none; }
+      #sf { flex: 1; }
+
+      #abar { padding: 10px 14px; padding-bottom: max(10px, env(safe-area-inset-bottom)); }
+      .abar-inner { gap: 6px; }
+      .btn { height: 44px; font-size: 13px; padding: 0 4px; }
+
+      .field input, .field select { height: 42px; font-size: 14px; padding: 0 12px; }
+      .field label { font-size: 11px; }
+      .field { gap: 3px; }
+      .grid2 { gap: 8px; }
+      .divider { margin: 10px 0; }
+
+      #records-total-bar { padding: 12px 14px; gap: 10px; }
       .rtb-val { font-size: 15px; }
       .rtb-val.grand { font-size: 18px; }
       .rtb-lbl { font-size: 9px; }
       .rtb-divider { display: none; }
-    }
-
-    /* ── Responsive Breakpoints ─────────────────────────────────── */
-
-    /* Desktop (>= 901px) */
-    @media (min-width: 901px) {
-      .tb-inner {
-        height: 100px;
-        max-width: 1280px;
-      }
-
-      #navbar-logo {
-        height: 80px;
-      }
-
-      .wrap {
-        max-width: 1280px;
-        padding: 0 32px;
-        gap: var(--sp-lg);
-        margin-top: var(--sp-xl);
-      }
-
-      .card-container {
-        padding: 32px;
-      }
-    }
-
-    /* Tablets (769px - 900px) */
-    @media (min-width: 769px) and (max-width: 900px) {
-      .tb-inner {
-        height: 84px;
-      }
-
-      #navbar-logo {
-        height: 64px;
-      }
-
-      .wrap {
-        max-width: 100%;
-        padding: 0 24px;
-        gap: var(--sp-lg);
-      }
-
-      .card-container {
-        padding: 24px;
-      }
-
-      .tbl-outer {
-        display: none;
-      }
-
-      .card-list {
-        display: flex;
-        flex-direction: column;
-        gap: var(--sp-md);
-      }
-    }
-
-    /* Mobile Portrait (<= 768px) */
-    @media (max-width: 768px) {
-      .tb-inner {
-        height: 72px;
-        padding: 8px 16px;
-      }
-
-      #navbar-logo {
-        height: 56px;
-      }
-
-      /* Keep 2-column grid on mobile for tabular feel */
-      .grid2 {
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--sp-sm);
-      }
-
-      .wrap {
-        max-width: 100%;
-        padding: 0 16px;
-        margin: var(--sp-md) auto;
-        gap: var(--sp-md);
-      }
-
-      .card-container {
-        padding: 16px;
-      }
-
-      .tbl-outer {
-        display: none;
-      }
-
-      .card-list {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-      }
-
-      /* Even more compact cards at mobile */
-      .record-card {
-        padding: 8px 10px;
-        border-radius: 8px;
-      }
-
-      .rc-header {
-        margin-bottom: 6px;
-        padding-bottom: 6px;
-      }
-
-      .rc-body {
-        gap: 4px 8px;
-        margin-bottom: 6px;
-      }
-
-      .rc-lbl {
-        font-size: 9px;
-      }
-
-      .rc-txt {
-        font-size: 12px;
-      }
-
-      .rc-acts {
-        padding-top: 6px;
-        gap: 6px;
-      }
-
-      .rc-acts .ab {
-        height: 30px;
-        padding: 0 10px;
-        font-size: 11px;
-      }
-
-      .slabel {
-        margin-bottom: var(--sp-md);
-        font-size: 15px;
-      }
-
-      .srow.big .sk {
-        font-size: 16px;
-      }
-
-      .srow.big .sv {
-        font-size: 20px;
-      }
-
-      /* Stack Search & Sort */
-      .sgrp-lbl {
-        display: none;
-      }
-
-      .rbar {
-        flex-direction: column;
-        align-items: stretch;
-        gap: var(--sp-sm);
-      }
-
-      .sbox {
-        min-width: 100%;
-      }
-
-      .sgrp {
-        justify-content: space-between;
-      }
-
-      #sf {
-        flex: 1;
-      }
-
-      /* Card internals - keep 2-col */
-      .rc-body {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-      }
-
-      /* Action Bar */
-      #abar {
-        padding: 12px 16px;
-        padding-bottom: max(12px, env(safe-area-inset-bottom));
-      }
-
-      .abar-inner {
-        gap: 8px;
-      }
-
-      .btn {
-        height: 44px;
-        font-size: 13px;
-        padding: 0 6px;
-      }
-
-      /* Compact form fields on mobile — fit on screen */
-      .field input {
-        height: 40px;
-        font-size: 14px;
-        padding: 0 10px;
-      }
-
-      .field label {
-        font-size: 10px;
-        margin-bottom: 0;
-      }
-
-      .field {
-        gap: 3px;
-      }
-
-      .grid2 {
-        gap: 8px;
-      }
-
-      .slabel {
-        font-size: 14px;
-        margin-bottom: 10px;
-      }
-
-      .divider {
-        margin: 10px 0;
-      }
-
-      .srow {
-        padding: 7px 0;
-      }
-
-      .srow.big .sv {
-        font-size: 18px;
-      }
-
-      .prow {
-        margin-top: 10px;
-        gap: 8px;
-      }
-
-      .pbox {
-        padding: 10px 6px;
-      }
-
-      .pval {
-        font-size: 14px;
-      }
-
-      .card-container {
-        padding: 14px;
-      }
     }
   </style>
 </head>
@@ -1334,13 +1080,32 @@
   </div>
   <div id="toast"></div>
 
+  <!-- Delete Confirm Modal -->
+  <div id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title-el">
+    <div class="modal-card">
+      <div class="modal-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        </svg>
+      </div>
+      <div class="modal-title" id="modal-title-el">Delete Record?</div>
+      <div class="modal-body" id="modal-body-el">This action cannot be undone.</div>
+      <div class="modal-acts">
+        <button id="modal-cancel" class="btn bg">Cancel</button>
+        <button id="modal-confirm" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Print header -->
   <div id="ph">
     <h2 id="ph-name"></h2>
     <p id="ph-dt"></p>
   </div>
 
-  <!-- Top bar: Logo centered only -->
+  <!-- Top bar -->
   <div id="topbar">
     <div class="tb-inner">
       <img id="navbar-logo" src="/Media/Main.png" alt="Dharamraj Calculator">
@@ -1348,7 +1113,8 @@
   </div>
 
   <div class="wrap">
-    <!-- Form Container -->
+
+    <!-- ── Calculator Form Card ─────────────────────────────── -->
     <div class="card-container">
       <div class="slabel">
         <span>Calculator Details</span>
@@ -1359,79 +1125,102 @@
       <div id="err-banner"></div>
 
       <div class="grid2">
-        <div class="field full">
-          <label>Customer Name</label>
-          <input id="f-name" type="text" placeholder="Enter full name" autocomplete="off" spellcheck="false">
-        </div>
-        <div class="field full">
-          <label>Date</label>
+
+        <!-- Date -->
+        <div class="field">
+          <label for="f-date">Date</label>
           <input id="f-date" type="date">
         </div>
+
+        <!-- Customer Name -->
         <div class="field">
-          <label>Weight (g)</label>
+          <label for="f-name">Customer Name</label>
+          <input id="f-name" type="text" placeholder="Enter full name" autocomplete="off" spellcheck="false">
+        </div>
+
+        <!-- Weight -->
+        <div class="field">
+          <label for="f-w">Weight (g)</label>
           <input id="f-w" type="number" placeholder="0.000" step="0.001" min="0" inputmode="decimal">
         </div>
+
+        <!-- Rate -->
         <div class="field">
-          <label>Rate / g (₹)</label>
+          <label for="f-r">Rate / g (₹)</label>
           <input id="f-r" type="number" placeholder="0.00" step="0.01" min="0" inputmode="decimal">
         </div>
+
+        <!-- Labour -->
         <div class="field">
           <label>Labour</label>
-          <div style="display: flex; gap: var(--sp-sm); align-items: center;">
-            <input id="f-l" type="number" placeholder="0.00" step="0.01" min="0" inputmode="decimal" style="flex: 1;">
-            <div class="toggle-group" id="f-l-type" style="height: 48px; flex-shrink: 0;">
+          <div style="display:flex; gap:var(--sp-sm); align-items:center;">
+            <input id="f-l" type="number" placeholder="0.00" step="0.01" min="0" inputmode="decimal" style="flex:1;">
+            <div class="toggle-group" id="f-l-type" style="height:46px; flex-shrink:0;">
               <button type="button" class="t-btn active" data-val="perG">Per g</button>
               <button type="button" class="t-btn" data-val="percent">%</button>
             </div>
           </div>
         </div>
+
+        <!-- Other -->
         <div class="field">
-          <label>Other (₹)</label>
+          <label for="f-o">Other (₹)</label>
           <input id="f-o" type="number" placeholder="0.00" step="0.01" min="0" inputmode="decimal">
         </div>
+
+        <!-- GST -->
         <div class="field full">
-          <label>GST (%)</label>
+          <label for="f-g">GST (%)</label>
           <input id="f-g" type="number" placeholder="3" step="0.01" min="0" max="100" inputmode="decimal">
         </div>
-      </div>
 
-      <!-- Calculated summary -->
+      </div><!-- /.grid2 -->
+
+      <!-- ── Live Summary Panel ── -->
       <div class="divider"></div>
-      <div class="srow"><span class="sk">Metal Amount</span> <span class="sv" id="s-m">₹0.00</span></div>
-      <div class="srow"><span class="sk">Labour Amount</span><span class="sv" id="s-l">₹0.00</span></div>
-      <div class="srow"><span class="sk">Other Charges</span><span class="sv" id="s-o">₹0.00</span></div>
-      <div class="srow"><span class="sk">GST Amount</span> <span class="sv" id="s-g">₹0.00</span></div>
-      <div class="srow big"><span class="sk">Total Amount</span><span class="sv" id="s-t">₹0.00</span></div>
 
-      <div class="prow">
-        <div class="pbox">
-          <div class="plbl">Metal</div> <span class="pval" id="p-m">—</span>
+      <div class="sum-grid">
+        <div class="sbox">
+          <div class="sbox-lbl">Metal</div>
+          <div class="sbox-val" id="s-m">₹0.00</div>
         </div>
-        <div class="pbox">
-          <div class="plbl">Labour</div><span class="pval" id="p-l">—</span>
+        <div class="sbox">
+          <div class="sbox-lbl">Labour</div>
+          <div class="sbox-val" id="s-l">₹0.00</div>
         </div>
-        <div class="pbox">
-          <div class="plbl">Other</div> <span class="pval" id="p-o">—</span>
+        <div class="sbox">
+          <div class="sbox-lbl">Other</div>
+          <div class="sbox-val" id="s-o">₹0.00</div>
+        </div>
+        <div class="sbox">
+          <div class="sbox-lbl">GST</div>
+          <div class="sbox-val" id="s-g">₹0.00</div>
         </div>
       </div>
-    </div>
 
-    <!-- Records Container -->
+      <div class="price-row">
+        <span class="price-lbl">Total Amount</span>
+        <span class="price-val" id="s-t">₹0.00</span>
+      </div>
+
+    </div><!-- /.card-container (form) -->
+
+    <!-- ── Records Section ──────────────────────────────────── -->
     <div class="card-container" id="rec-section">
       <div id="srch-wrap">
-        <div class="slabel" style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="slabel" style="display:flex; justify-content:space-between; align-items:center;">
           <span>Recent Records</span>
-          <div style="display:flex; gap:8px;">
+          <div style="display:flex; gap:8px; align-items:center;">
             <button id="b-del-sel" class="btn-icon" style="display:none; color:var(--danger);" title="Delete Selected">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                 stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 6h18"></path>
+                <polyline points="3 6 5 6 21 6"></polyline>
                 <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
               </svg>
               Delete (<span id="del-cnt">0</span>)
             </button>
             <button id="b-refresh" class="btn-icon" title="Refresh Records">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                 stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 2v6h-6"></path>
                 <path d="M3 12a9 9 0 1 0 2.63-6.37L21 8"></path>
@@ -1440,12 +1229,14 @@
             </button>
           </div>
         </div>
+
+        <!-- Search + Sort toolbar -->
         <div class="rbar">
-          <div class="sbox">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          <div class="sbox-search">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
               stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
             <input id="q" type="search" placeholder="Search name, ID, date…" autocomplete="off">
           </div>
@@ -1458,12 +1249,13 @@
               <option value="weight">Weight</option>
               <option value="calcId">ID</option>
             </select>
-            <button id="sd">↓</button>
+            <button id="sd" title="Toggle sort direction">↓</button>
           </div>
         </div>
         <div id="rmeta"></div>
       </div>
 
+      <!-- Table (desktop) & Cards (mobile/tablet) -->
       <div class="tbl-outer" id="tbl-wrap"></div>
       <div class="card-list" id="card-wrap"></div>
 
@@ -1494,28 +1286,30 @@
           <span class="rtb-val grand" id="rtb-total">₹0</span>
         </div>
       </div>
-    </div>
-  </div>
+
+    </div><!-- /#rec-section -->
+
+  </div><!-- /.wrap -->
 
   <!-- Bottom action bar -->
   <div id="abar">
     <div class="abar-inner">
-      <button id="b-save" class="btn bp">Save Record</button>
-      <button id="b-update" class="btn bs" disabled>Update</button>
-      <button id="b-cancel" class="btn bg" style="display:none;">Cancel Edit</button>
-      <button id="b-reset" class="btn bg">Reset</button>
-      <button id="b-print" class="btn bg">Print</button>
+      <button id="b-save" class="btn bp">💾 Save</button>
+      <button id="b-update" class="btn bs" disabled>✏️ Update</button>
+      <button id="b-cancel" class="btn bg" style="display:none;">✕ Cancel</button>
+      <button id="b-reset" class="btn bg">↺ Reset</button>
+      <button id="b-print" class="btn bg">🖨️ Print</button>
     </div>
   </div>
 
   <script>
     // ╔══════════════════════════════════════════════════════════════╗
-    // ║  CONFIG — paste your Apps Script /exec URL here             ║
+    // ║  CONFIG — Apps Script /exec URL                             ║
     // ╚══════════════════════════════════════════════════════════════╝
     var GAS_URL = 'https://script.google.com/macros/s/AKfycbzjxjsqc7UFF_Y8hqlPYctsqWaN5jOxDvviib0jgxIVjVhenTXIhQtvY9G3TIbSZsQuxg/exec';
 
     // ── GAS API Helper ────────────────────────────────────────────
-    var GAS_TIMEOUT_MS = 15000; // 15 second timeout — never hang forever
+    var GAS_TIMEOUT_MS = 15000;
 
     function gasCall(action, data) {
       var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
@@ -1547,7 +1341,8 @@
       sortField: 'date',
       sortAsc: false,
       selectedIds: [],
-      labourType: 'perG'
+      labourType: 'perG',
+      _modalCallback: null   // pending delete callback
     };
 
     function $id(id) { return document.getElementById(id); }
@@ -1588,6 +1383,31 @@
 
     function hideLoader() { $id('loader').style.display = 'none'; }
 
+    // ── Delete Modal ──────────────────────────────────────────────
+    function showDeleteModal(titleText, bodyText, onConfirm) {
+      $id('modal-title-el').textContent = titleText;
+      $id('modal-body-el').textContent = bodyText;
+      S._modalCallback = onConfirm;
+      $id('modal-overlay').classList.add('show');
+    }
+
+    function hideDeleteModal() {
+      $id('modal-overlay').classList.remove('show');
+      S._modalCallback = null;
+    }
+
+    $id('modal-cancel').addEventListener('click', hideDeleteModal);
+    $id('modal-overlay').addEventListener('click', function (e) {
+      if (e.target === this) hideDeleteModal();
+    });
+    $id('modal-confirm').addEventListener('click', function () {
+      if (S._modalCallback) {
+        var cb = S._modalCallback;
+        hideDeleteModal();
+        cb();
+      }
+    });
+
     var SKIP_IDS = ['calc id', 'id', 'calculation id', 'calcid'];
     function isValidId(val) {
       if (val == null) return false;
@@ -1627,15 +1447,6 @@
       $id('s-o').textContent = fmtINR(c.other);
       $id('s-g').textContent = fmtINR(c.gstAmt);
       $id('s-t').textContent = fmtINR(c.total);
-      $id('p-m').textContent = fmtPct(c.mPct);
-
-      if (S.labourType === 'perG') {
-        $id('p-l').textContent = fmtPct(c.lPct);
-      } else {
-        $id('p-l').textContent = '₹' + c.labourPerG.toFixed(2) + '/g';
-      }
-
-      $id('p-o').textContent = fmtPct(c.oPct);
     }
 
     function dmyToNum(s) {
@@ -1683,20 +1494,27 @@
         + '<button class="ab del"  data-id="' + eid + '">Delete</button>';
     }
 
+    function skelHTML() {
+      var rows = '';
+      for (var i = 0; i < 6; i++) rows += '<div class="skel-row"></div>';
+      return '<div class="skel-wrap">' + rows + '</div>';
+    }
+
     function renderTable(list) {
       var box = $id('tbl-wrap');
       if (!list.length) {
         var isSearching = ($id('q').value || '').trim() !== '';
-        var msg = isSearching ? 'No records match your search.' : 'No records found';
-        box.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--text-muted); font-weight: 500;">' + msg + '</div>';
+        var msg = isSearching ? 'No records match your search.' : 'No records found.';
+        box.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted); font-weight:500;">' + msg + '</div>';
         return;
       }
-      var ths = '<th style="width:40px; padding-right:0;"><input type="checkbox" id="cb-all" style="cursor:pointer; width:16px; height:16px; accent-color:var(--primary);"></th>' + TABLE_COLS.map(function (c) {
-        var on = S.sortField === c.k;
-        var arr = on ? (S.sortAsc ? '↑' : '↓') : '↕';
-        return '<th' + (on ? ' class="on"' : '') + ' data-col="' + c.k + '">'
-          + '<div class="thi">' + c.l + '<span class="arr">' + arr + '</span></div></th>';
-      }).join('') + '<th></th>';
+      var ths = '<th style="width:40px; padding-right:0;"><input type="checkbox" id="cb-all" style="cursor:pointer; width:16px; height:16px; accent-color:var(--primary);"></th>'
+        + TABLE_COLS.map(function (c) {
+          var on = S.sortField === c.k;
+          var arr = on ? (S.sortAsc ? '↑' : '↓') : '↕';
+          return '<th' + (on ? ' class="on"' : '') + ' data-col="' + c.k + '">'
+            + '<div class="thi">' + c.l + '<span class="arr">' + arr + '</span></div></th>';
+        }).join('') + '<th></th>';
 
       var trs = list.map(function (r) {
         var checked = S.selectedIds.indexOf(r.calcId) > -1 ? 'checked' : '';
@@ -1704,7 +1522,7 @@
           + '<td style="width:40px; padding-right:0;"><input type="checkbox" class="cb-row" value="' + esc(r.calcId) + '" style="cursor:pointer; width:16px; height:16px; accent-color:var(--primary);" ' + checked + '></td>'
           + '<td><span class="cid-pill">' + esc(r.calcId) + '</span></td>'
           + '<td>' + esc(r.date) + '</td>'
-          + '<td style="max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">' + esc(r.customerName) + '</td>'
+          + '<td style="max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + esc(r.customerName) + '</td>'
           + '<td>' + fmtWt(r.weight) + 'g</td>'
           + '<td class="camt">' + fmtINR(r.totalAmount) + '</td>'
           + '<td class="acts">' + actionBtns(r.calcId) + '</td>'
@@ -1718,24 +1536,24 @@
       var box = $id('card-wrap');
       if (!list.length) {
         var isSearching = ($id('q').value || '').trim() !== '';
-        var msg = isSearching ? 'No records match your search.' : 'No records found';
-        box.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--text-muted); font-weight: 500;">' + msg + '</div>';
+        var msg = isSearching ? 'No records match your search.' : 'No records found.';
+        box.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted); font-weight:500;">' + msg + '</div>';
         return;
       }
       box.innerHTML = list.map(function (r) {
         var checked = S.selectedIds.indexOf(r.calcId) > -1 ? 'checked' : '';
         return '<div class="record-card" data-id="' + esc(r.calcId) + '">'
           + '<div class="rc-header">'
-          + '<div style="display:flex; align-items:center; gap:12px;">'
-          + '<input type="checkbox" class="cb-row" value="' + esc(r.calcId) + '" style="cursor:pointer; width:18px; height:18px; accent-color:var(--primary);" ' + checked + '>'
+          + '<div style="display:flex; align-items:center; gap:10px;">'
+          + '<input type="checkbox" class="cb-row" value="' + esc(r.calcId) + '" style="cursor:pointer; width:16px; height:16px; accent-color:var(--primary);" ' + checked + '>'
           + '<span class="rc-id">' + esc(r.calcId) + '</span>'
           + '</div>'
           + '<span class="rc-date">' + esc(r.date) + '</span>'
           + '</div>'
           + '<div class="rc-body">'
-          + '<div class="rc-val" style="grid-column: 1 / -1;"><span class="rc-lbl">Customer Name</span><span class="rc-txt" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + esc(r.customerName) + '</span></div>'
+          + '<div class="rc-val" style="grid-column:1/-1;"><span class="rc-lbl">Customer</span><span class="rc-txt" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">' + esc(r.customerName) + '</span></div>'
           + '<div class="rc-val"><span class="rc-lbl">Weight</span><span class="rc-txt">' + fmtWt(r.weight) + 'g</span></div>'
-          + '<div class="rc-val"><span class="rc-lbl">Total Amount</span><span class="rc-txt" style="color: var(--primary); font-size: 16px;">' + fmtINR(r.totalAmount) + '</span></div>'
+          + '<div class="rc-val"><span class="rc-lbl">Total</span><span class="rc-txt" style="color:var(--primary); font-size:15px;">' + fmtINR(r.totalAmount) + '</span></div>'
           + '</div>'
           + '<div class="rc-acts">' + actionBtns(r.calcId) + '</div>'
           + '</div>';
@@ -1907,25 +1725,25 @@
       }
     }
 
-    // ── API Calls (replaces google.script.run) ────────────────────
+    // ── API Calls ────────────────────────────────────────────────
 
     function doSave() {
       var data = collectFormData();
       if (!data.customerName) { showErr('Please enter a customer name.'); return; }
       showErr(null);
-      setBusy('b-save', 'Saving...');
+      setBusy('b-save', 'Saving…');
 
       gasCall('saveCalculation', data)
         .then(function (res) {
-          setFree('b-save', 'Save Record');
+          setFree('b-save', '💾 Save');
           if (!res || !res.ok) { showErr('Save failed: ' + (res ? res.error : 'No response')); return; }
           localAddRecord(res.calcId, data);
           renderAll();
           resetForm();
-          toast('Saved successfully: ' + res.calcId, 'ok');
+          toast('Saved — ' + res.calcId, 'ok');
         })
         .catch(function (e) {
-          setFree('b-save', 'Save Record');
+          setFree('b-save', '💾 Save');
           showErr('Save failed: ' + (e.message || e));
         });
     }
@@ -1936,50 +1754,52 @@
       data.calcId = S.editId;
       if (!data.customerName) { showErr('Please enter a customer name.'); return; }
       showErr(null);
-      setBusy('b-update', 'Updating...');
+      setBusy('b-update', 'Updating…');
 
       gasCall('updateCalculation', data)
         .then(function (res) {
-          setFree('b-update', 'Update');
+          setFree('b-update', '✏️ Update');
           if (!res || !res.ok) { showErr('Update failed: ' + (res ? res.error : 'No response')); return; }
           localUpdateRecord(S.editId, data);
           renderAll();
           resetForm();
-          toast('Updated successfully: ' + S.editId, 'ok');
+          toast('Updated — ' + S.editId, 'ok');
         })
         .catch(function (e) {
-          setFree('b-update', 'Update');
+          setFree('b-update', '✏️ Update');
           showErr('Update failed: ' + (e.message || e));
         });
     }
 
     function doDelete(id) {
       if (!isValidId(id)) { showErr('Cannot delete: "' + id + '" is not a valid record ID.'); return; }
-      if (!confirm('Are you sure you want to delete record ' + id + '?')) return;
 
-      gasCall('deleteCalculation', { id: id })
-        .then(function (res) {
-          if (!res || !res.ok) { showErr('Delete failed: ' + (res ? res.error : 'No response')); return; }
-          S.records = S.records.filter(function (r) { return r.calcId !== id; });
-          if (S.editId === id) resetForm();
-          $id('q').value = '';
-          renderAll();
-          toast('Deleted record ' + id, 'ok');
-        })
-        .catch(function (e) {
-          showErr('Delete failed: ' + (e.message || e));
-        });
+      showDeleteModal(
+        'Delete Record?',
+        'Delete record ' + id + '? This action cannot be undone.',
+        function () {
+          gasCall('deleteCalculation', { id: id })
+            .then(function (res) {
+              if (!res || !res.ok) { showErr('Delete failed: ' + (res ? res.error : 'No response')); return; }
+              S.records = S.records.filter(function (r) { return r.calcId !== id; });
+              if (S.editId === id) resetForm();
+              $id('q').value = '';
+              renderAll();
+              toast('Deleted record ' + id, 'ok');
+            })
+            .catch(function (e) {
+              showErr('Delete failed: ' + (e.message || e));
+            });
+        }
+      );
     }
 
     function loadRecords(silent) {
       var rBtn = $id('b-refresh');
       if (rBtn) rBtn.classList.add('spinning');
       if (!silent) {
-        // Show inline skeleton instead of full-screen overlay
-        var box = $id('tbl-wrap');
-        if (box) box.innerHTML = '<div style="text-align:center; padding: 32px; color: var(--text-muted); font-weight: 600;">Loading records…</div>';
-        var cbox = $id('card-wrap');
-        if (cbox) cbox.innerHTML = '<div style="text-align:center; padding: 32px; color: var(--text-muted); font-weight: 600;">Loading records…</div>';
+        $id('tbl-wrap').innerHTML = skelHTML();
+        $id('card-wrap').innerHTML = skelHTML();
       }
 
       gasCall('getCalculations')
@@ -2006,12 +1826,14 @@
       $id('f-date').value = todayISO();
       $id('f-g').value = 3;
 
-      // ─── Show the UI instantly, never block on a spinner ───────────
       hideLoader();
       renderAll();
       updateSummary();
 
-      // ─── Load config + records in parallel in the background ───────
+      // Show skeleton immediately so user sees something loading
+      $id('tbl-wrap').innerHTML = skelHTML();
+      $id('card-wrap').innerHTML = skelHTML();
+
       Promise.all([
         gasCall('getConfig'),
         gasCall('getCalculations')
@@ -2020,7 +1842,6 @@
           var cfgRes = results[0];
           var recRes = results[1];
 
-          // Apply config
           if (cfgRes && cfgRes.ok) {
             S.config = cfgRes.data;
             var bizEl = $id('biz-name');
@@ -2032,7 +1853,6 @@
             showErr('Could not load config. Check your Apps Script deployment.');
           }
 
-          // Apply records
           if (recRes && recRes.ok) {
             S.records = (recRes.data || []).filter(function (r) { return isValidId(r.calcId); });
             renderAll();
@@ -2042,6 +1862,7 @@
         })
         .catch(function (e) {
           showErr((e.message || 'Network error') + ' — tap Refresh to retry.');
+          renderAll();
         });
     }
 
@@ -2060,7 +1881,7 @@
       $id(id).addEventListener('input', updateSummary);
     });
 
-    // ── Enter key navigation between form fields ──────────────────
+    // Enter key navigation
     var FORM_FIELDS = ['f-name', 'f-date', 'f-w', 'f-r', 'f-l', 'f-o', 'f-g'];
     FORM_FIELDS.forEach(function (id, idx) {
       var el = $id(id);
@@ -2073,7 +1894,6 @@
           var next = $id(FORM_FIELDS[nextIdx]);
           if (next) next.focus();
         } else {
-          // Last field — blur to close mobile keyboard
           el.blur();
         }
       });
@@ -2157,31 +1977,37 @@
     if (bDelSel) {
       bDelSel.addEventListener('click', function () {
         if (S.selectedIds.length === 0) return;
-        if (!confirm('Are you sure you want to delete ' + S.selectedIds.length + ' selected record(s)?')) return;
+        var count = S.selectedIds.length;
 
-        bDelSel.disabled = true;
-        bDelSel.classList.add('spinning');
+        showDeleteModal(
+          'Delete ' + count + ' Record' + (count !== 1 ? 's' : '') + '?',
+          'This will permanently delete ' + count + ' selected record' + (count !== 1 ? 's' : '') + '. This cannot be undone.',
+          function () {
+            bDelSel.disabled = true;
+            bDelSel.classList.add('spinning');
 
-        gasCall('deleteCalculations', { ids: S.selectedIds })
-          .then(function (res) {
-            bDelSel.disabled = false;
-            bDelSel.classList.remove('spinning');
-            if (!res || !res.ok) { showErr('Bulk delete failed: ' + (res ? res.error : 'No response')); return; }
+            gasCall('deleteCalculations', { ids: S.selectedIds })
+              .then(function (res) {
+                bDelSel.disabled = false;
+                bDelSel.classList.remove('spinning');
+                if (!res || !res.ok) { showErr('Bulk delete failed: ' + (res ? res.error : 'No response')); return; }
 
-            var deletedCount = res.deleted || S.selectedIds.length;
-            S.records = S.records.filter(function (r) { return S.selectedIds.indexOf(r.calcId) === -1; });
-            if (S.selectedIds.indexOf(S.editId) > -1) resetForm();
+                var deletedCount = res.deleted || S.selectedIds.length;
+                S.records = S.records.filter(function (r) { return S.selectedIds.indexOf(r.calcId) === -1; });
+                if (S.selectedIds.indexOf(S.editId) > -1) resetForm();
 
-            S.selectedIds = [];
-            $id('q').value = '';
-            renderAll();
-            toast('Deleted ' + deletedCount + ' record(s)', 'ok');
-          })
-          .catch(function (e) {
-            bDelSel.disabled = false;
-            bDelSel.classList.remove('spinning');
-            showErr('Bulk delete failed: ' + (e.message || e));
-          });
+                S.selectedIds = [];
+                $id('q').value = '';
+                renderAll();
+                toast('Deleted ' + deletedCount + ' record(s)', 'ok');
+              })
+              .catch(function (e) {
+                bDelSel.disabled = false;
+                bDelSel.classList.remove('spinning');
+                showErr('Bulk delete failed: ' + (e.message || e));
+              });
+          }
+        );
       });
     }
 
