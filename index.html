@@ -1184,8 +1184,8 @@
   <!-- Estimate card — captured as JPEG by html2canvas -->
   <div id="estimate-card">
     <div style="text-align: center; margin-bottom: 24px;">
-      <div style="font-family: 'Cinzel', serif; font-size: 22px; font-weight: 800; color: #033C3C; letter-spacing: 0.05em; text-transform: uppercase;" id="est-biz-name">Dharamraj Calculator</div>
-      <div style="font-size: 12px; color: #8E9BA4; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px;">Estimate Details</div>
+      <img src="./Media/Main.png" alt="Logo" style="height: 40px; object-fit: contain; margin-bottom: 8px;">
+      <div style="font-size: 13px; color: #8E9BA4; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;">Estimate</div>
     </div>
     <div style="display: flex; justify-content: space-between; background: #FFFFFF; padding: 16px 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); margin-bottom: 16px;">
       <div style="display: flex; flex-direction: column; gap: 4px;">
@@ -1235,7 +1235,7 @@
       <span class="est-total-lbl">Total Amount</span>
       <span class="est-total-val" id="est-total">₹0.00</span>
     </div>
-    <div class="est-footer" id="est-footer">dharamraj.calculator &nbsp;|&nbsp; <span id="est-datetime"></span></div>
+    <div class="est-footer" id="est-footer"><span id="est-datetime"></span></div>
   </div>
 
   <!-- Top bar -->
@@ -2020,8 +2020,6 @@
             if (bizEl) bizEl.textContent = S.config.businessName || 'Dharamraj Calculator';
             var phNameEl = $id('ph-name');
             if (phNameEl) phNameEl.textContent = S.config.businessName || 'Dharamraj Calculator';
-            var estBizEl = $id('est-biz-name');
-            if (estBizEl) estBizEl.textContent = S.config.businessName || 'Dharamraj Calculator';
             $id('f-g').value = S.config.defaultGST || 3;
             updateSummary();
           } else {
