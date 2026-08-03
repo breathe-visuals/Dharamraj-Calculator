@@ -2027,7 +2027,8 @@
             S.config = cfgRes.data;
             var bizEl = $id('biz-name');
             if (bizEl) bizEl.textContent = S.config.businessName || 'Dharamraj Calculator';
-            $id('ph-name').textContent = S.config.businessName || 'Dharamraj Calculator';
+            var phNameEl = $id('ph-name');
+            if (phNameEl) phNameEl.textContent = S.config.businessName || 'Dharamraj Calculator';
             $id('f-g').value = S.config.defaultGST || 3;
             updateSummary();
           } else {
