@@ -1000,7 +1000,7 @@
       @page { size: A4 portrait; margin: 14mm 16mm; }
 
       #topbar, #abar, #srch-wrap, .acts, .rc-acts,
-      .card-container:nth-child(2), .divider,
+      .divider,
       #err-banner, #records-total-bar, #modal-overlay { display: none !important; }
 
       html, body {
@@ -1661,11 +1661,17 @@
     }
 
     var TABLE_COLS = [
-      { k: 'customerName', l: 'Customer' },
-      { k: 'date', l: 'Date' },
       { k: 'calcId', l: 'ID' },
-      { k: 'weight', l: 'Weight' },
-      { k: 'totalAmount', l: 'Total' }
+      { k: 'date', l: 'Date' },
+      { k: 'customerName', l: 'Customer' },
+      { k: 'metal', l: 'Metal' },
+      { k: 'weight', l: 'Wt(g)' },
+      { k: 'ratePerG', l: 'Rate' },
+      { k: 'labourAmount', l: 'Labour' },
+      { k: 'otherAmount', l: 'Other' },
+      { k: 'gstAmount', l: 'GST' },
+      { k: 'totalAmount', l: 'Total' },
+      { k: 'remarks', l: 'Remarks' }
     ];
 
     function actionBtns(id) {
@@ -1703,9 +1709,15 @@
           + '<td style="width:40px; padding-right:0;"><input type="checkbox" class="cb-row" value="' + esc(r.calcId) + '" style="cursor:pointer; width:16px; height:16px; accent-color:var(--primary);" ' + checked + '></td>'
           + '<td><span class="cid-pill">' + esc(r.calcId) + '</span></td>'
           + '<td>' + esc(r.date) + '</td>'
-          + '<td style="max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + esc(r.customerName) + '</td>'
+          + '<td style="max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + esc(r.customerName) + '</td>'
+          + '<td>' + esc(r.metal) + '</td>'
           + '<td>' + fmtWt(r.weight) + 'g</td>'
+          + '<td>' + fmtINR(r.ratePerG) + '</td>'
+          + '<td>' + fmtINR(r.labourAmount) + '</td>'
+          + '<td>' + fmtINR(r.otherAmount) + '</td>'
+          + '<td>' + fmtINR(r.gstAmount) + '</td>'
           + '<td class="camt">' + fmtINR(r.totalAmount) + '</td>'
+          + '<td style="max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + esc(r.remarks) + '</td>'
           + '<td class="acts">' + actionBtns(r.calcId) + '</td>'
           + '</tr>';
       }).join('');
@@ -1733,8 +1745,14 @@
           + '</div>'
           + '<div class="rc-body">'
           + '<div class="rc-val" style="grid-column:1/-1;"><span class="rc-lbl">Customer</span><span class="rc-txt" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">' + esc(r.customerName) + '</span></div>'
+          + '<div class="rc-val"><span class="rc-lbl">Metal</span><span class="rc-txt">' + esc(r.metal) + '</span></div>'
           + '<div class="rc-val"><span class="rc-lbl">Weight</span><span class="rc-txt">' + fmtWt(r.weight) + 'g</span></div>'
+          + '<div class="rc-val"><span class="rc-lbl">Rate</span><span class="rc-txt">' + fmtINR(r.ratePerG) + '</span></div>'
+          + '<div class="rc-val"><span class="rc-lbl">Labour</span><span class="rc-txt">' + fmtINR(r.labourAmount) + '</span></div>'
+          + '<div class="rc-val"><span class="rc-lbl">Other</span><span class="rc-txt">' + fmtINR(r.otherAmount) + '</span></div>'
+          + '<div class="rc-val"><span class="rc-lbl">GST</span><span class="rc-txt">' + fmtINR(r.gstAmount) + '</span></div>'
           + '<div class="rc-val"><span class="rc-lbl">Total</span><span class="rc-txt" style="color:var(--primary); font-size:15px;">' + fmtINR(r.totalAmount) + '</span></div>'
+          + '<div class="rc-val" style="grid-column:1/-1;"><span class="rc-lbl">Remarks</span><span class="rc-txt">' + esc(r.remarks) + '</span></div>'
           + '</div>'
           + '<div class="rc-acts">' + actionBtns(r.calcId) + '</div>'
           + '</div>';
