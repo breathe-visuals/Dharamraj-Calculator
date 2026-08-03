@@ -1782,7 +1782,7 @@
       $id('f-l-type').value = 'perG';
       $id('f-l').value = '';
       $id('f-o').value = '';
-      $id('f-g').value = (S.config.defaultGST != null && S.config.defaultGST !== '') ? S.config.defaultGST : 0;
+      $id('f-g').value = 0;
       $id('f-remarks').value = '';
       $id('f-date').value = todayISO();
       S.editId = null;
@@ -2021,7 +2021,7 @@
             if (bizEl) bizEl.textContent = S.config.businessName || 'Dharamraj Calculator';
             var phNameEl = $id('ph-name');
             if (phNameEl) phNameEl.textContent = S.config.businessName || 'Dharamraj Calculator';
-            $id('f-g').value = (S.config.defaultGST != null && S.config.defaultGST !== '') ? S.config.defaultGST : 0;
+            $id('f-g').value = 0;
             updateSummary();
           } else {
             showErr('Could not load config. Check your Apps Script deployment.');
