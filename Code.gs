@@ -116,7 +116,10 @@ function getCalculations() {
         try {
           var d = new Date(r[1]);
           if (!isNaN(d.getTime())) {
-            dateVal = Utilities.formatDate(d, tz, 'dd/MM/yyyy');
+            var day = ('0' + d.getDate()).slice(-2);
+            var month = ('0' + (d.getMonth() + 1)).slice(-2);
+            var year = d.getFullYear();
+            dateVal = day + '/' + month + '/' + year;
           }
         } catch (_) {}
       }

@@ -1489,7 +1489,7 @@
     var GAS_URL = 'https://script.google.com/macros/s/AKfycbzjxjsqc7UFF_Y8hqlPYctsqWaN5jOxDvviib0jgxIVjVhenTXIhQtvY9G3TIbSZsQuxg/exec';
 
     // ── GAS API Helper ────────────────────────────────────────────
-    var GAS_TIMEOUT_MS = 15000;
+    var GAS_TIMEOUT_MS = 30000;
 
     function gasCall(action, data) {
       var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
