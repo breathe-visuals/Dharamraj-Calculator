@@ -1313,7 +1313,7 @@
         <!-- GST -->
         <div class="field">
           <label for="f-g">GST (%)</label>
-          <input id="f-g" type="number" placeholder="3" step="0.01" min="0" max="100" inputmode="decimal">
+          <input id="f-g" type="number" placeholder="0" step="0.01" min="0" max="100" inputmode="decimal">
         </div>
 
         <!-- Remarks -->
@@ -1393,6 +1393,7 @@
             <select id="sf">
               <option value="date">Date</option>
               <option value="customerName">Name</option>
+              <option value="metal">Metal</option>
               <option value="totalAmount">Total</option>
               <option value="weight">Weight</option>
               <option value="calcId">ID</option>
@@ -1781,7 +1782,7 @@
       $id('f-l-type').value = 'perG';
       $id('f-l').value = '';
       $id('f-o').value = '';
-      $id('f-g').value = S.config.defaultGST || 3;
+      $id('f-g').value = (S.config.defaultGST != null && S.config.defaultGST !== '') ? S.config.defaultGST : 0;
       $id('f-remarks').value = '';
       $id('f-date').value = todayISO();
       S.editId = null;
@@ -2020,7 +2021,7 @@
             if (bizEl) bizEl.textContent = S.config.businessName || 'Dharamraj Calculator';
             var phNameEl = $id('ph-name');
             if (phNameEl) phNameEl.textContent = S.config.businessName || 'Dharamraj Calculator';
-            $id('f-g').value = S.config.defaultGST || 3;
+            $id('f-g').value = (S.config.defaultGST != null && S.config.defaultGST !== '') ? S.config.defaultGST : 0;
             updateSummary();
           } else {
             showErr('Could not load config. Check your Apps Script deployment.');
