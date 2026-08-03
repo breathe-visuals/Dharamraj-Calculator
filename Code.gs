@@ -104,7 +104,7 @@ function getCalculations() {
     var lastRow = getLastDataRow_(sheet);
     if (lastRow < 2) return { ok: true, data: [] }; // No data yet
 
-    var dataRange = sheet.getRange(2, 1, lastRow - 1, 16);
+    var dataRange = sheet.getRange(2, 1, lastRow - 1, 18);
     var tz   = Session.getScriptTimeZone();
     var rows = [];
 
@@ -137,7 +137,9 @@ function getCalculations() {
         totalAmount     : Number(r[12]) || 0,
         metalPercent    : Number(r[13]) || 0,
         labourPercent   : Number(r[14]) || 0,
-        otherPercent    : Number(r[15]) || 0
+        otherPercent    : Number(r[15]) || 0,
+        metal           : String(r[16] || ''),
+        remarks         : String(r[17] || '')
       });
     });
 
@@ -174,10 +176,12 @@ function saveCalculation(data) {
       data.totalAmount,
       data.metalPercent,
       data.labourPercent,
-      data.otherPercent
+      data.otherPercent,
+      data.metal || '',
+      data.remarks || ''
     ];
 
-    sheet.getRange(newRow, 1, 1, 16).setValues([rowData]);
+    sheet.getRange(newRow, 1, 1, 18).setValues([rowData]);
     
     // Attempt to force a flush so subsequent getCalculations fetch the updated data.
     SpreadsheetApp.flush();
@@ -197,7 +201,7 @@ function updateCalculation(data) {
     var row   = findRowById_(sheet, data.calcId);
     if (!row) return { ok: false, error: 'Record not found: ' + data.calcId };
 
-    sheet.getRange(row, 1, 1, 16).setValues([[
+    sheet.getRange(row, 1, 1, 18).setValues([[
       data.calcId,
       new Date(data.date),
       data.customerName,
@@ -213,7 +217,9 @@ function updateCalculation(data) {
       data.totalAmount,
       data.metalPercent,
       data.labourPercent,
-      data.otherPercent
+      data.otherPercent,
+      data.metal || '',
+      data.remarks || ''
     ]]);
     SpreadsheetApp.flush();
     return { ok: true };

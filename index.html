@@ -197,7 +197,8 @@
     }
 
     .field input,
-    .field select {
+    .field select,
+    .field textarea {
       height: 46px;
       padding: 0 14px;
       border-radius: var(--r-md);
@@ -212,8 +213,17 @@
       font-weight: 600;
     }
 
+    .field textarea {
+      height: auto;
+      min-height: 80px;
+      padding-top: 12px;
+      padding-bottom: 12px;
+      resize: vertical;
+    }
+
     .field input:focus,
-    .field select:focus {
+    .field select:focus,
+    .field textarea:focus {
       border-color: var(--primary);
       background: #FFF;
       box-shadow: 0 0 0 3px var(--primary-bg);
@@ -971,7 +981,8 @@
 
     .rtb-val.grand { font-size: 22px; color: #E3B958; }
 
-    .rtb-divider { display: none; }
+    .rtb-divider {
+      display: none;
       width: 1px;
       height: 36px;
       background: rgba(255, 255, 255, 0.2);
@@ -1210,12 +1221,6 @@
     </div>
   </div>
 
-  <!-- Print header (kept for @media print fallback) -->
-  <div id="ph">
-    <h2 id="ph-name"></h2>
-    <p id="ph-dt"></p>
-  </div>
-
   <!-- Estimate card — captured as JPEG by html2canvas -->
   <div id="estimate-card">
     <div class="est-meta">
@@ -1229,6 +1234,10 @@
       </div>
     </div>
     <div class="est-body">
+      <div class="est-row">
+        <span class="est-lbl">Metal Type</span>
+        <span class="est-val" id="est-metal-type">—</span>
+      </div>
       <div class="est-row">
         <span class="est-lbl">Weight</span>
         <span class="est-val" id="est-weight">—</span>
@@ -1258,13 +1267,17 @@
       <span class="est-total-lbl">Total Amount</span>
       <span class="est-total-val" id="est-total">₹0.00</span>
     </div>
+    <div id="est-remarks-block" style="display:none; padding: 16px 32px; background: #fff; border-top: 1px dashed #E6EDEC;">
+      <span style="font-size: 11px; color: #8E9BA4; font-weight: 700; text-transform: uppercase;">Remarks</span>
+      <div id="est-remarks-text" style="font-size: 13px; color: #556B72; margin-top: 4px; white-space: pre-wrap; word-break: break-word;"></div>
+    </div>
     <div class="est-footer" id="est-footer">dharamraj.calculator &nbsp;|&nbsp; <span id="est-datetime"></span></div>
   </div>
 
   <!-- Top bar -->
   <div id="topbar">
     <div class="tb-inner">
-      <img id="navbar-logo" src="/Media/Main.png" alt="Jewellery Calculator">
+      <img id="navbar-logo" src="./Media/Main.png" alt="Jewellery Calculator">
     </div>
   </div>
 
@@ -1292,6 +1305,15 @@
         <div class="field">
           <label for="f-date">Date</label>
           <input id="f-date" type="date">
+        </div>
+
+        <!-- Metal Type -->
+        <div class="field">
+          <label for="f-metal">Metal Type</label>
+          <select id="f-metal">
+            <option value="Gold">Gold</option>
+            <option value="Silver">Silver</option>
+          </select>
         </div>
 
         <!-- Weight -->
@@ -1325,9 +1347,15 @@
         </div>
 
         <!-- GST -->
-        <div class="field full">
+        <div class="field">
           <label for="f-g">GST (%)</label>
           <input id="f-g" type="number" placeholder="3" step="0.01" min="0" max="100" inputmode="decimal">
+        </div>
+
+        <!-- Remarks -->
+        <div class="field full">
+          <label for="f-remarks">Remarks (Optional)</label>
+          <textarea id="f-remarks" rows="2" placeholder="Any additional notes..."></textarea>
         </div>
 
       </div><!-- /.grid2 -->
@@ -1755,6 +1783,7 @@
 
     function resetForm() {
       $id('f-name').value = '';
+      $id('f-metal').value = 'Gold';
       $id('f-w').value = '';
       $id('f-r').value = '';
       S.labourType = 'perG';
@@ -1762,6 +1791,7 @@
       $id('f-l').value = '';
       $id('f-o').value = '';
       $id('f-g').value = S.config.defaultGST || 3;
+      $id('f-remarks').value = '';
       $id('f-date').value = todayISO();
       S.editId = null;
       $id('b-update').disabled = true;
@@ -1776,6 +1806,7 @@
     function fillForm(rec) {
       $id('f-name').value = rec.customerName;
       $id('f-date').value = rec.date ? rec.date.split('/').reverse().join('-') : todayISO();
+      $id('f-metal').value = rec.metal || 'Gold';
       $id('f-w').value = rec.weight;
       $id('f-r').value = rec.ratePerG;
       S.labourType = 'perG';
@@ -1783,6 +1814,7 @@
       $id('f-l').value = rec.labourPerG;
       $id('f-o').value = rec.otherCharge;
       $id('f-g').value = rec.gstPercent;
+      $id('f-remarks').value = rec.remarks || '';
       S.editId = rec.calcId;
       $id('b-update').disabled = false;
       $id('b-save').disabled = true;
@@ -1805,6 +1837,7 @@
       return {
         date: $id('f-date').value || todayISO(),
         customerName: $id('f-name').value.trim(),
+        metal: $id('f-metal').value,
         weight: w,
         ratePerG: r,
         labourPerG: +c.labourPerG.toFixed(4),
@@ -1817,7 +1850,8 @@
         totalAmount: +c.total.toFixed(4),
         metalPercent: +c.mPct.toFixed(4),
         labourPercent: +c.lPct.toFixed(4),
-        otherPercent: +c.oPct.toFixed(4)
+        otherPercent: +c.oPct.toFixed(4),
+        remarks: $id('f-remarks').value.trim()
       };
     }
 
@@ -1829,6 +1863,7 @@
         calcId: calcId,
         date: data.date.split('-').reverse().join('/'),
         customerName: data.customerName,
+        metal: data.metal,
         weight: data.weight,
         ratePerG: data.ratePerG,
         labourPerG: data.labourPerG,
@@ -1841,7 +1876,8 @@
         totalAmount: data.totalAmount,
         metalPercent: data.metalPercent,
         labourPercent: data.labourPercent,
-        otherPercent: data.otherPercent
+        otherPercent: data.otherPercent,
+        remarks: data.remarks
       });
     }
 
@@ -1851,6 +1887,7 @@
         S.records[idx] = Object.assign({}, S.records[idx], {
           date: data.date.split('-').reverse().join('/'),
           customerName: data.customerName,
+          metal: data.metal,
           weight: data.weight,
           ratePerG: data.ratePerG,
           labourPerG: data.labourPerG,
@@ -1863,7 +1900,8 @@
           totalAmount: data.totalAmount,
           metalPercent: data.metalPercent,
           labourPercent: data.labourPercent,
-          otherPercent: data.otherPercent
+          otherPercent: data.otherPercent,
+          remarks: data.remarks
         });
       }
     }
@@ -2020,7 +2058,7 @@
     });
 
     // Enter key navigation
-    var FORM_FIELDS = ['f-name', 'f-date', 'f-w', 'f-r', 'f-l', 'f-o', 'f-g'];
+    var FORM_FIELDS = ['f-name', 'f-date', 'f-metal', 'f-w', 'f-r', 'f-l', 'f-o', 'f-g', 'f-remarks'];
     FORM_FIELDS.forEach(function (id, idx) {
       var el = $id(id);
       if (!el) return;
@@ -2070,6 +2108,7 @@
 
       $id('est-customer').textContent = data.customerName || '—';
       $id('est-date').textContent = dateStr;
+      $id('est-metal-type').textContent = data.metal || 'Gold';
       $id('est-weight').textContent = fmtWt(data.weight) + ' g';
       $id('est-rate').textContent = fmtINR(data.ratePerG) + ' /g';
       $id('est-metal').textContent = fmtINR(data.metalAmount);
@@ -2078,6 +2117,14 @@
       $id('est-gst').textContent = fmtINR(data.gstAmount) + ' (' + data.gstPercent + '%)';
       $id('est-total').textContent = fmtINR(data.totalAmount);
       $id('est-datetime').textContent = now.toLocaleDateString('en-IN') + ' ' + now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+
+      var rmBlock = $id('est-remarks-block');
+      if (data.remarks) {
+        $id('est-remarks-text').textContent = data.remarks;
+        rmBlock.style.display = 'block';
+      } else {
+        rmBlock.style.display = 'none';
+      }
 
       var card = $id('estimate-card');
       card.style.left = '-9999px';
