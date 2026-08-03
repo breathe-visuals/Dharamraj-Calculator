@@ -1735,26 +1735,35 @@
       }
       box.innerHTML = list.map(function (r) {
         var checked = S.selectedIds.indexOf(r.calcId) > -1 ? 'checked' : '';
+        var remarksHtml = r.remarks ? '<div style="font-size: 11px; color: var(--text-muted); margin-top: 4px; font-style: italic;">💬 ' + esc(r.remarks) + '</div>' : '';
+        
         return '<div class="record-card" data-id="' + esc(r.calcId) + '">'
-          + '<div class="rc-header">'
-          + '<div style="display:flex; align-items:center; gap:10px;">'
-          + '<input type="checkbox" class="cb-row" value="' + esc(r.calcId) + '" style="cursor:pointer; width:16px; height:16px; accent-color:var(--primary);" ' + checked + '>'
-          + '<span class="rc-id">' + esc(r.calcId) + '</span>'
+          + '<div class="rc-header" style="margin-bottom: 8px; border-bottom: none; padding-bottom: 0;">'
+          + '<div style="display:flex; align-items:center; gap:8px; overflow:hidden;">'
+          + '<input type="checkbox" class="cb-row" value="' + esc(r.calcId) + '" style="cursor:pointer; width:16px; height:16px; accent-color:var(--primary); flex-shrink:0;" ' + checked + '>'
+          + '<span class="rc-id" style="flex-shrink:0;">' + esc(r.calcId) + '</span>'
+          + '<span style="font-weight: 800; font-size: 14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color: var(--text-main);">' + esc(r.customerName) + '</span>'
           + '</div>'
-          + '<span class="rc-date">' + esc(r.date) + '</span>'
+          + '<span class="rc-date" style="flex-shrink:0; margin-left: 8px;">' + esc(r.date) + '</span>'
           + '</div>'
-          + '<div class="rc-body">'
-          + '<div class="rc-val" style="grid-column:1/-1;"><span class="rc-lbl">Customer</span><span class="rc-txt" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">' + esc(r.customerName) + '</span></div>'
-          + '<div class="rc-val"><span class="rc-lbl">Metal</span><span class="rc-txt">' + esc(r.metal) + '</span></div>'
-          + '<div class="rc-val"><span class="rc-lbl">Weight</span><span class="rc-txt">' + fmtWt(r.weight) + 'g</span></div>'
-          + '<div class="rc-val"><span class="rc-lbl">Rate</span><span class="rc-txt">' + fmtINR(r.ratePerG) + '</span></div>'
-          + '<div class="rc-val"><span class="rc-lbl">Labour</span><span class="rc-txt">' + fmtINR(r.labourAmount) + '</span></div>'
-          + '<div class="rc-val"><span class="rc-lbl">Other</span><span class="rc-txt">' + fmtINR(r.otherAmount) + '</span></div>'
-          + '<div class="rc-val"><span class="rc-lbl">GST</span><span class="rc-txt">' + fmtINR(r.gstAmount) + '</span></div>'
-          + '<div class="rc-val"><span class="rc-lbl">Total</span><span class="rc-txt" style="color:var(--primary); font-size:15px;">' + fmtINR(r.totalAmount) + '</span></div>'
-          + '<div class="rc-val" style="grid-column:1/-1;"><span class="rc-lbl">Remarks</span><span class="rc-txt">' + esc(r.remarks) + '</span></div>'
+          + '<div class="rc-body" style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 0;">'
+          + '<div style="display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; color: var(--text-sec); font-weight: 600; background: #F9FAFC; padding: 8px; border-radius: 6px; border: 1px solid var(--border);">'
+          + '<span>Metal: <b style="color:var(--text-main);">' + esc(r.metal) + '</b></span>'
+          + '<span>Wt: <b style="color:var(--text-main);">' + fmtWt(r.weight) + 'g</b></span>'
+          + '<span>Rate: <b style="color:var(--text-main);">' + fmtINR(r.ratePerG) + '</b></span>'
+          + '<span>Lbr: <b style="color:var(--text-main);">' + fmtINR(r.labourAmount) + '</b></span>'
+          + '<span>Oth: <b style="color:var(--text-main);">' + fmtINR(r.otherAmount) + '</b></span>'
+          + '<span>GST: <b style="color:var(--text-main);">' + fmtINR(r.gstAmount) + '</b></span>'
           + '</div>'
-          + '<div class="rc-acts">' + actionBtns(r.calcId) + '</div>'
+          + remarksHtml
+          + '<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 4px; padding-top: 6px; border-top: 1px solid var(--border);">'
+          + '<div style="display: flex; flex-direction: column; line-height: 1.2;">'
+          + '<span style="font-size: 10px; color: var(--text-sec); font-weight: 700; text-transform: uppercase;">Total</span>'
+          + '<span style="font-size: 16px; color: var(--primary); font-weight: 800;">' + fmtINR(r.totalAmount) + '</span>'
+          + '</div>'
+          + '<div class="rc-acts" style="border: none; padding: 0; justify-content: flex-end;">' + actionBtns(r.calcId) + '</div>'
+          + '</div>'
+          + '</div>'
           + '</div>';
       }).join('');
     }
