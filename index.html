@@ -288,104 +288,64 @@
 
     /* ── Estimate Card (hidden in UI, captured as JPEG) ── */
     #estimate-card {
-      position: fixed;
+      position: absolute;
       left: -9999px;
-      top: 0;
-      width: 480px;
-      min-height: 600px;
+      top: -9999px;
+      width: 400px;
       height: auto;
       display: flex;
       flex-direction: column;
-      background: linear-gradient(135deg, #F4F7F6 0%, #E6EDEC 100%);
+      background: #F4F7F6;
       font-family: 'Inter', sans-serif;
-      padding: 24px;
+      padding: 32px;
       z-index: -1;
+      box-sizing: border-box;
     }
-
-    .est-header {
-      background: #033C3C;
-      padding: 32px 32px 26px;
-      text-align: center;
-    }
-
-    .est-word {
-      font-family: 'Cinzel', Georgia, serif;
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 0.3em;
-      color: #C9941E;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-
-    .est-biz {
-      font-size: 26px;
-      font-weight: 800;
-      color: #FFFFFF;
-      letter-spacing: 0.06em;
-    }
-
-    .est-meta {
-      display: flex;
-      justify-content: space-between;
-      padding: 18px 32px;
-      background: #FFFFFF;
-      border-bottom: 1px solid #EAEAEA;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-    }
-
-    .est-meta-item { display: flex; flex-direction: column; gap: 4px; }
-    .est-meta-lbl { font-size: 11px; font-weight: 700; color: #8E9BA4; text-transform: uppercase; letter-spacing: 0.05em; }
-    .est-meta-val { font-size: 16px; font-weight: 700; color: #033C3C; }
-
-    .est-body { padding: 28px 32px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; gap: 12px; }
 
     .est-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 14px 0;
-      border-bottom: 1px dashed #D0D9D9;
+      border-bottom: 1px dashed #EAEAEA;
     }
 
-    .est-row:last-child { border-bottom: none; }
-
-    .est-lbl { font-size: 16px; font-weight: 600; color: #556B72; }
-    .est-val { font-size: 18px; font-weight: 800; color: #033C3C; font-variant-numeric: tabular-nums; }
+    .est-lbl { font-size: 13px; font-weight: 600; color: #556B72; }
+    .est-val { font-size: 15px; font-weight: 800; color: #033C3C; font-variant-numeric: tabular-nums; }
 
     .est-total-block {
-      margin: 16px 32px 0;
+      margin-top: 16px;
       background: linear-gradient(135deg, #033C3C, #022525);
       border-radius: 12px;
-      padding: 24px 32px;
+      padding: 20px 24px;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      justify-content: center;
       align-items: center;
+      gap: 6px;
       box-shadow: 0 8px 20px rgba(3,60,60,0.15);
     }
 
     .est-total-lbl {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 700;
       color: rgba(255,255,255,0.85);
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
     }
 
     .est-total-val {
-      font-size: 38px;
+      font-size: 28px;
       font-weight: 900;
       color: #E3B958;
       font-variant-numeric: tabular-nums;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
 
     .est-footer {
       text-align: center;
-      padding: 20px 32px 28px;
-      font-size: 12px;
+      padding-top: 24px;
+      font-size: 11px;
       color: #99AAB0;
-      letter-spacing: 0.05em;
     }
 
     /* ══════════════════════════════════════════════════════════
@@ -1223,17 +1183,21 @@
 
   <!-- Estimate card — captured as JPEG by html2canvas -->
   <div id="estimate-card">
-    <div class="est-meta">
-      <div class="est-meta-item">
-        <span class="est-meta-lbl">Customer</span>
-        <span class="est-meta-val" id="est-customer">—</span>
+    <div style="text-align: center; margin-bottom: 24px;">
+      <div style="font-family: 'Cinzel', serif; font-size: 22px; font-weight: 800; color: #033C3C; letter-spacing: 0.05em; text-transform: uppercase;" id="est-biz-name">Dharamraj Calculator</div>
+      <div style="font-size: 12px; color: #8E9BA4; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px;">Estimate Details</div>
+    </div>
+    <div style="display: flex; justify-content: space-between; background: #FFFFFF; padding: 16px 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); margin-bottom: 16px;">
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-size: 10px; font-weight: 700; color: #8E9BA4; text-transform: uppercase; letter-spacing: 0.05em;">Customer</span>
+        <span style="font-size: 15px; font-weight: 800; color: #033C3C;" id="est-customer">—</span>
       </div>
-      <div class="est-meta-item" style="text-align:right;">
-        <span class="est-meta-lbl">Date</span>
-        <span class="est-meta-val" id="est-date">—</span>
+      <div style="display: flex; flex-direction: column; gap: 4px; text-align: right;">
+        <span style="font-size: 10px; font-weight: 700; color: #8E9BA4; text-transform: uppercase; letter-spacing: 0.05em;">Date</span>
+        <span style="font-size: 15px; font-weight: 800; color: #033C3C;" id="est-date">—</span>
       </div>
     </div>
-    <div class="est-body">
+    <div style="background: #FFFFFF; border-radius: 12px; padding: 0 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
       <div class="est-row">
         <span class="est-lbl">Metal Type</span>
         <span class="est-val" id="est-metal-type">—</span>
@@ -1258,18 +1222,18 @@
         <span class="est-lbl">Other Charges</span>
         <span class="est-val" id="est-other">—</span>
       </div>
-      <div class="est-row">
+      <div class="est-row" style="border-bottom: none;">
         <span class="est-lbl">GST</span>
         <span class="est-val" id="est-gst">—</span>
       </div>
     </div>
+    <div id="est-remarks-block" style="display:none; margin-top: 16px; background: #FFFFFF; padding: 16px 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+      <div style="font-size: 10px; font-weight: 700; color: #8E9BA4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Remarks</div>
+      <div id="est-remarks-text" style="font-size: 13px; color: #556B72; line-height: 1.4; white-space: pre-wrap; word-break: break-word;"></div>
+    </div>
     <div class="est-total-block">
       <span class="est-total-lbl">Total Amount</span>
       <span class="est-total-val" id="est-total">₹0.00</span>
-    </div>
-    <div id="est-remarks-block" style="display:none; padding: 16px 32px; background: #fff; border-top: 1px dashed #E6EDEC;">
-      <span style="font-size: 11px; color: #8E9BA4; font-weight: 700; text-transform: uppercase;">Remarks</span>
-      <div id="est-remarks-text" style="font-size: 13px; color: #556B72; margin-top: 4px; white-space: pre-wrap; word-break: break-word;"></div>
     </div>
     <div class="est-footer" id="est-footer">dharamraj.calculator &nbsp;|&nbsp; <span id="est-datetime"></span></div>
   </div>
@@ -2056,6 +2020,8 @@
             if (bizEl) bizEl.textContent = S.config.businessName || 'Dharamraj Calculator';
             var phNameEl = $id('ph-name');
             if (phNameEl) phNameEl.textContent = S.config.businessName || 'Dharamraj Calculator';
+            var estBizEl = $id('est-biz-name');
+            if (estBizEl) estBizEl.textContent = S.config.businessName || 'Dharamraj Calculator';
             $id('f-g').value = S.config.defaultGST || 3;
             updateSummary();
           } else {
