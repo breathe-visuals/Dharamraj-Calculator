@@ -1290,7 +1290,7 @@
         <span class="est-val" id="est-weight">—</span>
       </div>
       <div class="est-row">
-        <span class="est-lbl">Rate 10/g</span>
+        <span class="est-lbl">Rate (₹/10g)</span>
         <span class="est-val" id="est-rate">—</span>
       </div>
       <div class="est-row">
@@ -1381,7 +1381,7 @@
 
         <!-- Rate -->
         <div class="field">
-          <label for="f-r">Rate 10/g (₹)</label>
+          <label for="f-r">Rate (₹ per 10g)</label>
           <input id="f-r" type="number" placeholder="0.00" step="0.01" min="0" inputmode="decimal">
         </div>
 
@@ -1670,7 +1670,7 @@
 
     function calcAmounts(w, r, lVal, lType, o, g) {
       w = +w || 0; r = +r || 0; lVal = +lVal || 0; o = +o || 0; g = +g || 0;
-      var metal = w * r;
+      var metal = w * (r / 10);  // rate is per 10g
       var labourAmount = (lType === 'percent') ? (metal * lVal / 100) : (w * lVal);
       var labourPerG = (w > 0) ? (labourAmount / w) : 0;
       var other = o;
@@ -1754,7 +1754,7 @@
       { k: 'customerName', l: 'Customer' },
       { k: 'metal', l: 'Metal' },
       { k: 'weight', l: 'Wt(g)' },
-      { k: 'ratePerG', l: 'Rate' },
+      { k: 'ratePerG', l: 'Rate/10g' },
       { k: 'labourAmount', l: 'Labour' },
       { k: 'otherAmount', l: 'Other' },
       { k: 'gstAmount', l: 'GST' },
@@ -2245,7 +2245,7 @@
       $id('est-date').textContent = dateStr;
       $id('est-metal-type').textContent = data.metal || 'Gold';
       $id('est-weight').textContent = fmtWt(data.weight) + ' g';
-      $id('est-rate').textContent = fmtINR(data.ratePerG) + ' /g';
+      $id('est-rate').textContent = fmtINR(data.ratePerG) + ' /10g';
       $id('est-metal').textContent = fmtINR(data.metalAmount);
       $id('est-labour').textContent = fmtINR(data.labourAmount);
       $id('est-other').textContent = fmtINR(data.otherAmount);
