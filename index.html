@@ -408,6 +408,66 @@
       font-variant-numeric: tabular-nums;
     }
 
+    /* ── Payable / Received ─────────────────────────────────── */
+    .pay-recv-wrap {
+      margin-top: var(--sp-md);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-sm);
+    }
+
+    .pay-recv-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-sm);
+    }
+
+    #f-payable {
+      background: var(--bg) !important;
+      color: var(--text-muted) !important;
+      font-weight: 700;
+      cursor: not-allowed;
+    }
+
+    .pay-balance-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: var(--r-sm);
+      padding: 10px 14px;
+      font-weight: 800;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .pay-balance-row.bal-due {
+      background: #FEF3CD;
+      border: 1px solid #F5C842;
+      color: #7A5C00;
+    }
+
+    .pay-balance-row.bal-paid {
+      background: var(--success-bg);
+      border: 1px solid var(--success);
+      color: #1A6B3C;
+    }
+
+    .pay-bal-lbl {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .pay-bal-val {
+      font-size: 20px;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+    }
+
     /* ══════════════════════════════════════════════════════════
        LOADER & SKELETON
     ══════════════════════════════════════════════════════════ */
@@ -1061,6 +1121,28 @@
         color: #033C3C !important;
       }
 
+      .pay-recv-wrap {
+        margin-top: 6px !important;
+        border: 1px solid #CCC !important;
+        padding: 8px 10px !important;
+      }
+
+      .pay-recv-fields { grid-template-columns: 1fr 1fr !important; gap: 6px !important; }
+
+      #f-payable {
+        background: transparent !important;
+        border-bottom: 1px solid #CCC !important;
+        color: #333 !important;
+        font-weight: 700;
+      }
+
+      .pay-balance-row {
+        padding: 6px 10px !important;
+        font-size: 12px !important;
+      }
+
+      .pay-bal-val { font-size: 16px !important; }
+
       body::after {
         content: 'Dharamraj Calculator — Confidential';
         display: block;
@@ -1235,6 +1317,16 @@
       <span class="est-total-lbl">Total Amount</span>
       <span class="est-total-val" id="est-total">₹0.00</span>
     </div>
+    <div style="display:flex; gap:12px; margin-top:12px;">
+      <div style="flex:1; background:#E6EFEF; border-radius:10px; padding:12px 16px; display:flex; flex-direction:column; gap:4px;">
+        <span style="font-size:10px; font-weight:700; color:#8E9BA4; text-transform:uppercase; letter-spacing:0.05em;">Received</span>
+        <span style="font-size:16px; font-weight:900; color:#033C3C;" id="est-received">₹0.00</span>
+      </div>
+      <div style="flex:1; background:#FEF3CD; border-radius:10px; padding:12px 16px; display:flex; flex-direction:column; gap:4px;" id="est-balance-block">
+        <span style="font-size:10px; font-weight:700; color:#8E9BA4; text-transform:uppercase; letter-spacing:0.05em;">Balance Due</span>
+        <span style="font-size:16px; font-weight:900; color:#7A5C00;" id="est-balance">₹0.00</span>
+      </div>
+    </div>
     <div class="est-footer" id="est-footer"><span id="est-datetime"></span></div>
   </div>
 
@@ -1349,6 +1441,24 @@
       <div class="price-row">
         <span class="price-lbl">Total Amount</span>
         <span class="price-val" id="s-t">₹0.00</span>
+      </div>
+
+      <!-- ── Payable / Received ───────────────── -->
+      <div class="pay-recv-wrap">
+        <div class="pay-recv-fields">
+          <div class="field">
+            <label for="f-payable">Payable (₹)</label>
+            <input id="f-payable" type="text" readonly tabindex="-1" placeholder="0.00">
+          </div>
+          <div class="field">
+            <label for="f-received">Received (₹)</label>
+            <input id="f-received" type="number" placeholder="0.00" step="0.01" min="0" inputmode="decimal">
+          </div>
+        </div>
+        <div class="pay-balance-row bal-due" id="pay-balance-row">
+          <span class="pay-bal-lbl">Balance Due</span>
+          <span class="pay-bal-val" id="pay-bal-val">₹0.00</span>
+        </div>
       </div>
 
     </div><!-- /.card-container (form) -->
@@ -1592,6 +1702,23 @@
       $id('s-o').textContent = fmtINR(c.other);
       $id('s-g').textContent = fmtINR(c.gstAmt);
       $id('s-t').textContent = fmtINR(c.total);
+
+      // Payable = Total (read-only display)
+      $id('f-payable').value = (+(c.total) || 0).toFixed(2);
+
+      // Balance = Payable - Received
+      var recv = +$id('f-received').value || 0;
+      var bal  = c.total - recv;
+      var balEl  = $id('pay-bal-val');
+      var rowEl  = $id('pay-balance-row');
+      balEl.textContent = fmtINR(bal);
+      if (bal <= 0.005) {
+        rowEl.className = 'pay-balance-row bal-paid';
+        rowEl.querySelector('.pay-bal-lbl').textContent = 'Fully Paid ✓';
+      } else {
+        rowEl.className = 'pay-balance-row bal-due';
+        rowEl.querySelector('.pay-bal-lbl').textContent = 'Balance Due';
+      }
     }
 
     function dmyToNum(s) {
@@ -1722,9 +1849,16 @@
           + '</div>'
           + remarksHtml
           + '<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 4px; padding-top: 6px; border-top: 1px solid var(--border);">'
+          + '<div style="display: flex; gap: 12px; align-items: flex-end;">'
           + '<div style="display: flex; flex-direction: column; line-height: 1.2;">'
           + '<span style="font-size: 10px; color: var(--text-sec); font-weight: 700; text-transform: uppercase;">Total</span>'
           + '<span style="font-size: 16px; color: var(--primary); font-weight: 800;">' + fmtINR(r.totalAmount) + '</span>'
+          + '</div>'
+          + '<div style="display: flex; flex-direction: column; line-height: 1.2;">'
+          + '<span style="font-size: 10px; color: var(--text-sec); font-weight: 700; text-transform: uppercase;">Received</span>'
+          + '<span style="font-size: 14px; color: var(--success); font-weight: 800;">' + fmtINR(r.receivedAmount || 0) + '</span>'
+          + '</div>'
+          + ((r.balanceAmount > 0.005) ? ('<div style="display: flex; flex-direction: column; line-height: 1.2;"><span style="font-size: 10px; color: var(--text-sec); font-weight: 700; text-transform: uppercase;">Balance</span><span style="font-size: 14px; color: var(--gold); font-weight: 800;">' + fmtINR(r.balanceAmount) + '</span></div>') : ('<div style="display: flex; flex-direction: column; line-height: 1.2;"><span style="font-size: 10px; color: var(--success); font-weight: 700;">&#10003; Paid</span></div>'))
           + '</div>'
           + '<div class="rc-acts" style="border: none; padding: 0; justify-content: flex-end;">' + actionBtns(r.calcId) + '</div>'
           + '</div>'
@@ -1784,6 +1918,7 @@
       $id('f-o').value = '';
       $id('f-g').value = 0;
       $id('f-remarks').value = '';
+      $id('f-received').value = '';
       $id('f-date').value = todayISO();
       S.editId = null;
       $id('b-update').disabled = true;
@@ -1807,6 +1942,7 @@
       $id('f-o').value = rec.otherCharge;
       $id('f-g').value = rec.gstPercent;
       $id('f-remarks').value = rec.remarks || '';
+      $id('f-received').value = rec.receivedAmount || 0;
       S.editId = rec.calcId;
       $id('b-update').disabled = false;
       $id('b-save').disabled = true;
@@ -1843,7 +1979,9 @@
         metalPercent: +c.mPct.toFixed(4),
         labourPercent: +c.lPct.toFixed(4),
         otherPercent: +c.oPct.toFixed(4),
-        remarks: $id('f-remarks').value.trim()
+        remarks: $id('f-remarks').value.trim(),
+        receivedAmount: +($id('f-received').value || 0),
+        balanceAmount: +(c.total - (+$id('f-received').value || 0)).toFixed(4)
       };
     }
 
@@ -1869,7 +2007,9 @@
         metalPercent: data.metalPercent,
         labourPercent: data.labourPercent,
         otherPercent: data.otherPercent,
-        remarks: data.remarks
+        remarks: data.remarks,
+        receivedAmount: data.receivedAmount || 0,
+        balanceAmount: data.balanceAmount || 0
       });
     }
 
@@ -1893,7 +2033,9 @@
           metalPercent: data.metalPercent,
           labourPercent: data.labourPercent,
           otherPercent: data.otherPercent,
-          remarks: data.remarks
+          remarks: data.remarks,
+          receivedAmount: data.receivedAmount || 0,
+          balanceAmount: data.balanceAmount || 0
         });
       }
     }
@@ -2046,12 +2188,12 @@
       updateSummary();
     });
 
-    ['f-w', 'f-r', 'f-l', 'f-o', 'f-g'].forEach(function (id) {
+    ['f-w', 'f-r', 'f-l', 'f-o', 'f-g', 'f-received'].forEach(function (id) {
       $id(id).addEventListener('input', updateSummary);
     });
 
     // Enter key navigation
-    var FORM_FIELDS = ['f-name', 'f-date', 'f-metal', 'f-w', 'f-r', 'f-l', 'f-o', 'f-g', 'f-remarks'];
+    var FORM_FIELDS = ['f-name', 'f-date', 'f-metal', 'f-w', 'f-r', 'f-l', 'f-o', 'f-g', 'f-received', 'f-remarks'];
     FORM_FIELDS.forEach(function (id, idx) {
       var el = $id(id);
       if (!el) return;
@@ -2109,6 +2251,20 @@
       $id('est-other').textContent = fmtINR(data.otherAmount);
       $id('est-gst').textContent = fmtINR(data.gstAmount) + ' (' + data.gstPercent + '%)';
       $id('est-total').textContent = fmtINR(data.totalAmount);
+      var recv = data.receivedAmount || 0;
+      var bal  = data.balanceAmount != null ? data.balanceAmount : (data.totalAmount - recv);
+      $id('est-received').textContent = fmtINR(recv);
+      $id('est-balance').textContent  = fmtINR(bal);
+      var balBlock = $id('est-balance-block');
+      if (bal <= 0.005) {
+        balBlock.style.background = '#DDF4E4';
+        balBlock.querySelector('span:last-child').style.color = '#1A6B3C';
+        balBlock.querySelector('span:first-child').textContent = 'Fully Paid ✓';
+      } else {
+        balBlock.style.background = '#FEF3CD';
+        balBlock.querySelector('span:last-child').style.color = '#7A5C00';
+        balBlock.querySelector('span:first-child').textContent = 'Balance Due';
+      }
       $id('est-datetime').textContent = now.toLocaleDateString('en-IN') + ' ' + now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
 
       var rmBlock = $id('est-remarks-block');
