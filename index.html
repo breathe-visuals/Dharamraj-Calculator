@@ -427,10 +427,11 @@
     }
 
     #f-payable {
-      background: var(--bg) !important;
-      color: var(--text-muted) !important;
-      font-weight: 700;
+      background: #FEF3CD !important;
+      color: #7A5C00 !important;
+      font-weight: 800;
       cursor: not-allowed;
+      font-size: 15px;
     }
 
     .pay-balance-row {
@@ -1443,21 +1444,18 @@
         <span class="price-val" id="s-t">₹0.00</span>
       </div>
 
-      <!-- ── Payable / Received ───────────────── -->
+      <!-- ── Balance Due / Received ───────────────── -->
       <div class="pay-recv-wrap">
         <div class="pay-recv-fields">
           <div class="field">
-            <label for="f-payable">Payable (₹)</label>
-            <input id="f-payable" type="text" readonly tabindex="-1" placeholder="0.00">
+            <label for="f-payable">Balance Due (₹)</label>
+            <input id="f-payable" type="text" readonly tabindex="-1" placeholder="0.00"
+              style="font-weight:800; color: var(--gold) !important; background: #FEF3CD !important;">
           </div>
           <div class="field">
             <label for="f-received">Received (₹)</label>
             <input id="f-received" type="number" placeholder="0.00" step="0.01" min="0" inputmode="decimal">
           </div>
-        </div>
-        <div class="pay-balance-row bal-due" id="pay-balance-row">
-          <span class="pay-bal-lbl">Balance Due</span>
-          <span class="pay-bal-val" id="pay-bal-val">₹0.00</span>
         </div>
       </div>
 
@@ -1703,21 +1701,19 @@
       $id('s-g').textContent = fmtINR(c.gstAmt);
       $id('s-t').textContent = fmtINR(c.total);
 
-      // Payable = Total (read-only display)
-      $id('f-payable').value = (+(c.total) || 0).toFixed(2);
-
-      // Balance = Payable - Received
+      // Balance Due = Total - Received (shown in f-payable field)
       var recv = +$id('f-received').value || 0;
       var bal  = c.total - recv;
-      var balEl  = $id('pay-bal-val');
-      var rowEl  = $id('pay-balance-row');
-      balEl.textContent = fmtINR(bal);
+      var balInput = $id('f-payable');
+      balInput.value = bal.toFixed(2);
       if (bal <= 0.005) {
-        rowEl.className = 'pay-balance-row bal-paid';
-        rowEl.querySelector('.pay-bal-lbl').textContent = 'Fully Paid ✓';
+        balInput.style.color = 'var(--success) !important';
+        balInput.style.background = 'var(--success-bg) !important';
+        balInput.style.fontWeight = '800';
       } else {
-        rowEl.className = 'pay-balance-row bal-due';
-        rowEl.querySelector('.pay-bal-lbl').textContent = 'Balance Due';
+        balInput.style.color = '#7A5C00 !important';
+        balInput.style.background = '#FEF3CD !important';
+        balInput.style.fontWeight = '800';
       }
     }
 
@@ -1763,6 +1759,8 @@
       { k: 'otherAmount', l: 'Other' },
       { k: 'gstAmount', l: 'GST' },
       { k: 'totalAmount', l: 'Total' },
+      { k: 'receivedAmount', l: 'Received' },
+      { k: 'balanceAmount', l: 'Balance' },
       { k: 'remarks', l: 'Remarks' }
     ];
 
@@ -1809,6 +1807,8 @@
           + '<td>' + fmtINR(r.otherAmount) + '</td>'
           + '<td>' + fmtINR(r.gstAmount) + '</td>'
           + '<td class="camt">' + fmtINR(r.totalAmount) + '</td>'
+          + '<td style="color:var(--success); font-weight:700;">' + fmtINR(r.receivedAmount || 0) + '</td>'
+          + '<td style="color:' + (r.balanceAmount > 0.005 ? 'var(--gold)' : 'var(--success)') + '; font-weight:800;">' + (r.balanceAmount > 0.005 ? fmtINR(r.balanceAmount) : '&#10003; Paid') + '</td>'
           + '<td style="max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + esc(r.remarks) + '</td>'
           + '<td class="acts">' + actionBtns(r.calcId) + '</td>'
           + '</tr>';
