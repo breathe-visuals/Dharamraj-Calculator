@@ -1798,10 +1798,10 @@
 
     <!-- Estimate card — captured as JPEG by html2canvas -->
     <div id="estimate-card">
-        <div style="text-align: center; margin-bottom: 24px;">
-            <img src="./Media/Main.png" alt="Logo" style="height: 40px; object-fit: contain; margin-bottom: 8px;">
+        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 24px; gap: 8px;">
+            <img src="./Media/Main.png" alt="Logo" style="height: 80px; object-fit: contain;">
             <div
-                style="font-size: 13px; color: #8E9BA4; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;">
+                style="font-size: 20px; color: #8E9BA4; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase;">
                 Estimate</div>
         </div>
         <div
@@ -1834,17 +1834,19 @@
                 <span class="est-lbl">Metal Amount</span>
                 <span class="est-val" id="est-metal">—</span>
             </div>
-            <div class="est-row">
-                <span class="est-lbl">Labour</span>
-                <span class="est-val" id="est-labour">—</span>
-            </div>
-            <div class="est-row">
-                <span class="est-lbl">Other Charges</span>
-                <span class="est-val" id="est-other">—</span>
-            </div>
-            <div class="est-row" style="border-bottom: none;">
-                <span class="est-lbl">GST</span>
-                <span class="est-val" id="est-gst">—</span>
+            <div style="display: flex; justify-content: space-between; padding: 14px 0; gap: 16px;">
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+                    <span class="est-lbl" style="font-size: 11px; text-transform: uppercase;">Labour</span>
+                    <span class="est-val" id="est-labour" style="text-align: left; font-size: 14px;">—</span>
+                </div>
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+                    <span class="est-lbl" style="font-size: 11px; text-transform: uppercase;">Other Charges</span>
+                    <span class="est-val" id="est-other" style="text-align: left; font-size: 14px;">—</span>
+                </div>
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 6px; text-align: right;">
+                    <span class="est-lbl" style="font-size: 11px; text-transform: uppercase;">GST</span>
+                    <span class="est-val" id="est-gst" style="text-align: right; font-size: 14px;">—</span>
+                </div>
             </div>
         </div>
         <div id="est-remarks-block"
