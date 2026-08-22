@@ -1798,10 +1798,10 @@
 
     <!-- Estimate card — captured as JPEG by html2canvas -->
     <div id="estimate-card">
-        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 24px; gap: 8px;">
+        <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 24px;">
             <img src="./Media/Main.png" alt="Logo" style="height: 80px; object-fit: contain;">
             <div
-                style="font-size: 20px; color: #8E9BA4; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase;">
+                style="font-size: 24px; color: #8E9BA4; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase;">
                 Estimate</div>
         </div>
         <div
@@ -1822,13 +1822,15 @@
                 <span class="est-lbl">Metal Type</span>
                 <span class="est-val" id="est-metal-type">—</span>
             </div>
-            <div class="est-row">
-                <span class="est-lbl">Weight</span>
-                <span class="est-val" id="est-weight">—</span>
-            </div>
-            <div class="est-row">
-                <span class="est-lbl">Rate 10/g</span>
-                <span class="est-val" id="est-rate">—</span>
+            <div class="est-row" style="display: flex; justify-content: space-between; padding: 14px 0; gap: 16px;">
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+                    <span class="est-lbl" style="font-size: 11px; text-transform: uppercase;">Weight</span>
+                    <span class="est-val" id="est-weight" style="text-align: left; font-size: 14px;">—</span>
+                </div>
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 6px; text-align: right;">
+                    <span class="est-lbl" style="font-size: 11px; text-transform: uppercase;">Rate 10/g</span>
+                    <span class="est-val" id="est-rate" style="text-align: right; font-size: 14px;">—</span>
+                </div>
             </div>
             <div class="est-row">
                 <span class="est-lbl">Metal Amount</span>
