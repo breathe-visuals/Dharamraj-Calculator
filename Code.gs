@@ -125,26 +125,26 @@ function getCalculations() {
       }
 
       rows.push({
-        calcId          : String(r[0]).trim(),
+        calcId          : String(r[0] || '').trim(),
         date            : dateVal,
-        customerName    : String(r[2]  || ''),
-        weight          : Number(r[3])  || 0,
-        ratePerG        : Number(r[4])  || 0,
-        labourPerG      : Number(r[5])  || 0,
-        otherCharge     : Number(r[6])  || 0,
-        gstPercent      : Number(r[7])  || 0,
-        metalAmount     : Number(r[8])  || 0,
-        labourAmount    : Number(r[9])  || 0,
-        otherAmount     : Number(r[10]) || 0,
-        gstAmount       : Number(r[11]) || 0,
-        totalAmount     : Number(r[12]) || 0,
-        metalPercent    : Number(r[13]) || 0,
-        labourPercent   : Number(r[14]) || 0,
-        otherPercent    : Number(r[15]) || 0,
+        customerName    : String(r[2] || ''),
+        weight          : safeNum_(r[3]),
+        ratePerG        : safeNum_(r[4]),
+        labourPerG      : safeNum_(r[5]),
+        otherCharge     : safeNum_(r[6]),
+        gstPercent      : safeNum_(r[7]),
+        metalAmount     : safeNum_(r[8]),
+        labourAmount    : safeNum_(r[9]),
+        otherAmount     : safeNum_(r[10]),
+        gstAmount       : safeNum_(r[11]),
+        totalAmount     : safeNum_(r[12]),
+        metalPercent    : safeNum_(r[13]),
+        labourPercent   : safeNum_(r[14]),
+        otherPercent    : safeNum_(r[15]),
         metal           : String(r[16] || ''),
         remarks         : String(r[17] || ''),
-        receivedAmount  : Number(r[18]) || 0,
-        balanceAmount   : Number(r[19]) || 0
+        receivedAmount  : safeNum_(r[18]),
+        balanceAmount   : safeNum_(r[19])
       });
     });
 
@@ -168,24 +168,24 @@ function saveCalculation(data) {
     var rowData = [
       id,
       new Date(data.date),
-      data.customerName,
-      data.weight,
-      data.ratePerG,
-      data.labourPerG,
-      data.otherCharge,
-      data.gstPercent,
-      data.metalAmount,
-      data.labourAmount,
-      data.otherAmount,
-      data.gstAmount,
-      data.totalAmount,
-      data.metalPercent,
-      data.labourPercent,
-      data.otherPercent,
+      data.customerName || '',
+      safeNum_(data.weight),
+      safeNum_(data.ratePerG),
+      safeNum_(data.labourPerG),
+      safeNum_(data.otherCharge),
+      safeNum_(data.gstPercent),
+      safeNum_(data.metalAmount),
+      safeNum_(data.labourAmount),
+      safeNum_(data.otherAmount),
+      safeNum_(data.gstAmount),
+      safeNum_(data.totalAmount),
+      safeNum_(data.metalPercent),
+      safeNum_(data.labourPercent),
+      safeNum_(data.otherPercent),
       data.metal || '',
       data.remarks || '',
-      data.receivedAmount || 0,
-      data.balanceAmount  || 0
+      safeNum_(data.receivedAmount),
+      safeNum_(data.balanceAmount)
     ];
 
     sheet.getRange(newRow, 1, 1, 20).setValues([rowData]);
@@ -211,24 +211,24 @@ function updateCalculation(data) {
     sheet.getRange(row, 1, 1, 20).setValues([[
       data.calcId,
       new Date(data.date),
-      data.customerName,
-      data.weight,
-      data.ratePerG,
-      data.labourPerG,
-      data.otherCharge,
-      data.gstPercent,
-      data.metalAmount,
-      data.labourAmount,
-      data.otherAmount,
-      data.gstAmount,
-      data.totalAmount,
-      data.metalPercent,
-      data.labourPercent,
-      data.otherPercent,
+      data.customerName || '',
+      safeNum_(data.weight),
+      safeNum_(data.ratePerG),
+      safeNum_(data.labourPerG),
+      safeNum_(data.otherCharge),
+      safeNum_(data.gstPercent),
+      safeNum_(data.metalAmount),
+      safeNum_(data.labourAmount),
+      safeNum_(data.otherAmount),
+      safeNum_(data.gstAmount),
+      safeNum_(data.totalAmount),
+      safeNum_(data.metalPercent),
+      safeNum_(data.labourPercent),
+      safeNum_(data.otherPercent),
       data.metal || '',
       data.remarks || '',
-      data.receivedAmount || 0,
-      data.balanceAmount  || 0
+      safeNum_(data.receivedAmount),
+      safeNum_(data.balanceAmount)
     ]]);
     SpreadsheetApp.flush();
     return { ok: true };
@@ -326,4 +326,12 @@ function generateId_(ss) {
   // Since getDataRange() starts at row 1, index i corresponds to sheet row i+1
   if (idRow >= 0) sheet.getRange(idRow + 1, 2).setValue(newId);
   return prefix + '-' + String(newId).padStart(4, '0');
+}
+
+function safeNum_(val) {
+  if (typeof val === 'number') return isNaN(val) ? 0 : val;
+  if (!val) return 0;
+  var s = String(val).replace(/[^0-9.-]/g, '');
+  var n = Number(s);
+  return isNaN(n) ? 0 : n;
 }

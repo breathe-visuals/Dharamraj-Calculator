@@ -2242,7 +2242,7 @@
 
         function calcAmounts(w, r, lVal, lType, o, g) {
             w = +w || 0; r = +r || 0; lVal = +lVal || 0; o = +o || 0; g = +g || 0;
-            var metal = w * r;
+            var metal = w * (r / 10);
             var labourAmount = (lType === 'percent') ? (metal * lVal / 100) : (w * lVal);
             var labourPerG = (w > 0) ? (labourAmount / w) : 0;
             var other = o;
@@ -3045,6 +3045,15 @@
 
         init();
 
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('./sw.js').then(function(registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function(err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
     </script>
 </body>
 
